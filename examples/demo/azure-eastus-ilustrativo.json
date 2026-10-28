@@ -1,0 +1,163 @@
+{
+  "provider": "azure",
+  "region": "eastus",
+  "currency": "USD",
+  "fetched": "2026-10-28T00:00:00+00:00",
+  "source": "Precios ILUSTRATIVOS, aproximados a mano a partir de precios públicos de lista conocidos a 2026, no descargados de la API ni cotizados. Solo para el reporte de ejemplo. No usar con clientes.",
+  "sample": true,
+  "hours_per_month": 730,
+  "commit_discount_3yr": 0.6,
+  "storage": {
+    "name": "Premium SSD P30 LRS prorrateado (ilustrativo)",
+    "usd_per_gib_month": 0.132
+  },
+  "instances": [
+    {
+      "name": "Standard_F2s_v2",
+      "vcpus": 2,
+      "memory_gib": 4,
+      "linux_hour": 0.0846,
+      "windows_hour": 0.1766
+    },
+    {
+      "name": "Standard_D2s_v5",
+      "vcpus": 2,
+      "memory_gib": 8,
+      "linux_hour": 0.096,
+      "windows_hour": 0.188
+    },
+    {
+      "name": "Standard_E2s_v5",
+      "vcpus": 2,
+      "memory_gib": 16,
+      "linux_hour": 0.126,
+      "windows_hour": 0.218
+    },
+    {
+      "name": "Standard_F4s_v2",
+      "vcpus": 4,
+      "memory_gib": 8,
+      "linux_hour": 0.1692,
+      "windows_hour": 0.3532
+    },
+    {
+      "name": "Standard_D4s_v5",
+      "vcpus": 4,
+      "memory_gib": 16,
+      "linux_hour": 0.192,
+      "windows_hour": 0.376
+    },
+    {
+      "name": "Standard_E4s_v5",
+      "vcpus": 4,
+      "memory_gib": 32,
+      "linux_hour": 0.252,
+      "windows_hour": 0.436
+    },
+    {
+      "name": "Standard_F8s_v2",
+      "vcpus": 8,
+      "memory_gib": 16,
+      "linux_hour": 0.3384,
+      "windows_hour": 0.7064
+    },
+    {
+      "name": "Standard_D8s_v5",
+      "vcpus": 8,
+      "memory_gib": 32,
+      "linux_hour": 0.384,
+      "windows_hour": 0.752
+    },
+    {
+      "name": "Standard_E8s_v5",
+      "vcpus": 8,
+      "memory_gib": 64,
+      "linux_hour": 0.504,
+      "windows_hour": 0.872
+    },
+    {
+      "name": "Standard_F16s_v2",
+      "vcpus": 16,
+      "memory_gib": 32,
+      "linux_hour": 0.6768,
+      "windows_hour": 1.4128
+    },
+    {
+      "name": "Standard_D16s_v5",
+      "vcpus": 16,
+      "memory_gib": 64,
+      "linux_hour": 0.768,
+      "windows_hour": 1.504
+    },
+    {
+      "name": "Standard_E16s_v5",
+      "vcpus": 16,
+      "memory_gib": 128,
+      "linux_hour": 1.008,
+      "windows_hour": 1.744
+    },
+    {
+      "name": "Standard_F32s_v2",
+      "vcpus": 32,
+      "memory_gib": 64,
+      "linux_hour": 1.3536,
+      "windows_hour": 2.8256
+    },
+    {
+      "name": "Standard_D32s_v5",
+      "vcpus": 32,
+      "memory_gib": 128,
+      "linux_hour": 1.536,
+      "windows_hour": 3.008
+    },
+    {
+      "name": "Standard_E32s_v5",
+      "vcpus": 32,
+      "memory_gib": 256,
+      "linux_hour": 2.016,
+      "windows_hour": 3.488
+    },
+    {
+      "name": "Standard_F48s_v2",
+      "vcpus": 48,
+      "memory_gib": 96,
+      "linux_hour": 2.0304,
+      "windows_hour": 4.2384
+    },
+    {
+      "name": "Standard_D48s_v5",
+      "vcpus": 48,
+      "memory_gib": 192,
+      "linux_hour": 2.304,
+      "windows_hour": 4.512
+    },
+    {
+      "name": "Standard_E48s_v5",
+      "vcpus": 48,
+      "memory_gib": 384,
+      "linux_hour": 3.024,
+      "windows_hour": 5.232
+    },
+    {
+      "name": "Standard_F64s_v2",
+      "vcpus": 64,
+      "memory_gib": 128,
+      "linux_hour": 2.7072,
+      "windows_hour": 5.6512
+    },
+    {
+      "name": "Standard_D64s_v5",
+      "vcpus": 64,
+      "memory_gib": 256,
+      "linux_hour": 3.072,
+      "windows_hour": 6.016
+    },
+    {
+      "name": "Standard_E64s_v5",
+      "vcpus": 64,
+      "memory_gib": 512,
+      "linux_hour": 4.032,
+      "windows_hour": 6.976
+    }
+  ]
+}

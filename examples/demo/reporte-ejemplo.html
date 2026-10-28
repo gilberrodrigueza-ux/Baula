@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Baula Compass: Empresa Ejemplo S.A.</title>
+<style>
+:root { --deep:#0b2a3a; --sea:#12465f; --teal:#2fb5a3; --teal-ink:#1d7f72; --sand:#f4efe6; --ink:#10222c;
+  --muted:#5b6b73; --line:#dfe5e8; --warn:#8a5a00; --warn-bg:#fff4dc; }
+* { box-sizing:border-box; }
+body { margin:0; background:#fff; color:var(--ink); font:10.5pt/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; }
+.page { max-width:760px; margin:0 auto; padding:16px; break-after:page; }
+@media print { .page { padding:0; } }
+.page:last-child { break-after:auto; }
+.cover { background:var(--deep); color:#fff; border-radius:12px; padding:16px 22px; }
+.brand { display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.02em; color:var(--teal); }
+h1 { font-size:22pt; margin:6px 0 2px; line-height:1.15; }
+.sub { margin:0; font-size:12pt; }
+.meta { margin:8px 0 0; font-size:8.5pt; color:#b8c9d1; }
+.banner { margin:12px 0 0; padding:8px 12px; border-radius:8px; background:var(--warn-bg); color:var(--warn);
+  font-weight:600; font-size:9pt; border:1px solid #f0d9a6; }
+h2 { font-size:15pt; color:var(--sea); margin:18px 0 6px; }
+h3 { font-size:11pt; margin:14px 0 6px; }
+.findings { padding-left:18px; margin:0; }
+.findings li { margin:4px 0; }
+.chart { width:100%; height:auto; display:block; margin:4px 0 8px; }
+.chart .grid { stroke:var(--line); stroke-width:1; }
+.chart .axis { fill:var(--muted); font-size:10px; }
+.chart .label { fill:var(--ink); font-size:12px; }
+.chart .value { fill:var(--muted); font-size:11px; }
+.chart .bar { fill:var(--teal); }
+table { width:100%; border-collapse:collapse; font-size:9pt; margin:4px 0; }
+th { text-align:left; color:var(--muted); font-weight:600; border-bottom:1.5px solid var(--line); padding:4px 6px; }
+td { border-bottom:1px solid var(--line); padding:4px 6px; vertical-align:top; }
+tr { break-inside:avoid; }
+.n { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.muted { color:var(--muted); }
+.note { font-size:8.5pt; color:var(--muted); margin:4px 0 10px; }
+.kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:6px 0 10px; }
+.kpis div { background:var(--sand); border-radius:10px; padding:10px 12px; }
+.kpis b { display:block; font-size:17pt; color:var(--deep); font-variant-numeric:tabular-nums; }
+.kpis span { font-size:8.5pt; color:var(--muted); }
+.tag { display:inline-block; padding:1px 7px; border-radius:99px; font-size:8pt; font-weight:600; white-space:nowrap;
+  border:1px solid currentColor; }
+.tag-official { color:var(--teal-ink); } .tag-reported { color:var(--sea); }
+.tag-disputed, .tag-to_verify, .tag-assumption { color:var(--warn); }
+.sources td:first-child { width:30%; } .sources td:nth-child(2) { width:13%; }
+.steps li { margin:4px 0; }
+footer { margin-top:18px; padding-top:8px; border-top:1px solid var(--line); font-size:8pt; color:var(--muted); }
+@media (max-width:600px) { .kpis { grid-template-columns:repeat(2,1fr); } }
+@page { size:Letter; margin:14mm; }
+</style></head>
+<body>
+<section class="page">
+  <header class="cover">
+    <div class="brand"><svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#2fb5a3"/><ellipse cx="32" cy="34" rx="13" ry="17" fill="#0b2a3a"/><path d="M32 18v32M22 27h20M21 37h22" stroke="#2fb5a3" stroke-width="2.4" stroke-linecap="round"/><circle cx="32" cy="13" r="5" fill="#0b2a3a"/></svg><span>Baula Compass</span></div>
+    <h1>Renovar VMware o salir</h1>
+    <p class="sub">Evaluación preliminar para <b>Empresa Ejemplo S.A.</b></p>
+    <p class="meta">Generado el 28 oct 2026 · Export de RVTools: empresa-ejemplo.xlsx ·
+      Reglas de Broadcom al 28 oct 2026 · Plazo: 3 años</p>
+  </header>
+  <div class="banner">Datos de ejemplo. Empresa, inventario y precios de nube ficticios. Las reglas de Broadcom y Proxmox son las reales del motor al día de hoy.</div>
+  <h2>Resumen</h2>
+  <ul class="findings"><li><b>Migrar a Proxmox VE</b> es el escenario de menor costo de software: 29 k a 57 k en el plazo, contra 58 k a 134 k para renovar vSphere Foundation.</li><li>Se pagan <b>40 núcleos que no existen</b>: de 320 licenciados, 40 son relleno por el mínimo de 16 núcleos por CPU en hosts con CPUs más chicas. Consolidar esos hosts baja la renovación.</li><li><b>25 VMs apagadas</b> de 182. No se cuentan en la nube; son candidatas a retiro antes de migrar o de renovar.</li><li><b>28 VMs con sistema operativo sin soporte</b> y 27 que pierden soporte en los próximos 12 meses. Cualquier destino exige resolverlas: actualizar, aislar o pagar soporte extendido.</li><li>8 de 8 hosts corren ESXi 8. El soporte general de vSphere 8 termina el <b>11 oct 2027</b>, en unos 12 meses.</li></ul>
+  <h3>Costo de software en 3 años, en USD</h3>
+  <svg class="chart" viewBox="0 0 680 194" role="img" aria-label="Costo de software en el plazo por escenario"><line x1="240.0" x2="240.0" y1="8" y2="172" class="grid"/><text x="240.0" y="188" class="axis" text-anchor="middle">0</text><line x1="320.0" x2="320.0" y1="8" y2="172" class="grid"/><text x="320.0" y="188" class="axis" text-anchor="middle">674 k</text><line x1="400.0" x2="400.0" y1="8" y2="172" class="grid"/><text x="400.0" y="188" class="axis" text-anchor="middle">1,348 k</text><line x1="480.0" x2="480.0" y1="8" y2="172" class="grid"/><text x="480.0" y="188" class="axis" text-anchor="middle">2,022 k</text><line x1="560.0" x2="560.0" y1="8" y2="172" class="grid"/><text x="560.0" y="188" class="axis" text-anchor="middle">2,696 k</text><text x="228" y="28.0" class="label" text-anchor="end">Renovar VMware Cloud Foundation</text><rect x="257.9" y="17.0" width="23.1" height="14" rx="4" class="bar"/><text x="289.0" y="28.0" class="value">151 k a 346 k</text><text x="228" y="60.0" class="label" text-anchor="end">Renovar vSphere Foundation</text><rect x="246.9" y="49.0" width="9.0" height="14" rx="4" class="bar"/><text x="263.9" y="60.0" class="value">58 k a 134 k</text><text x="228" y="92.0" class="label" text-anchor="end">Migrar a Azure</text><rect x="387.5" y="81.0" width="172.5" height="14" rx="4" class="bar"/><text x="568.0" y="92.0" class="value">1,243 k a 2,696 k</text><text x="228" y="124.0" class="label" text-anchor="end">Migrar a Google Cloud</text><rect x="392.2" y="113.0" width="155.9" height="14" rx="4" class="bar"/><text x="556.0" y="124.0" class="value">1,282 k a 2,595 k</text><text x="228" y="156.0" class="label" text-anchor="end">Migrar a Proxmox VE</text><rect x="243.4" y="145.0" width="6.0" height="14" rx="4" class="bar"/><text x="257.4" y="156.0" class="value">29 k a 57 k</text></svg>
+  <p class="note">Solo software y nube. No incluye hardware, centro de datos, energía, personal, backup ni horas de
+  migración. Renovar y Proxmox siguen sobre el hardware actual; la nube lo reemplaza. Comparar los totales
+  sin ese ajuste favorece a quedarse en sitio.</p>
+</section>
+
+<section class="page">
+  <h2>Inventario</h2>
+  <div class="kpis">
+    <div><b>182</b><span>VMs (157 encendidas)</span></div>
+    <div><b>1,226</b><span>vCPU asignadas</span></div>
+    <div><b>3,568</b><span>GiB de RAM asignada</span></div>
+    <div><b>64.0</b><span>TiB de disco aprovisionado</span></div>
+    <div><b>8</b><span>hosts, 16 sockets</span></div>
+    <div><b>280</b><span>núcleos físicos</span></div>
+  </div>
+  <h3>Hosts y núcleos licenciables</h3>
+  <table><thead><tr><th>Host</th><th>Cluster</th><th class="n">Sockets</th><th class="n">Núcleos por CPU</th>
+  <th class="n">Núcleos a licenciar</th><th>Versión</th></tr></thead><tbody><tr><td>esx-prd-01.ejemplo.local</td><td>PROD</td><td class="n">2</td><td class="n">24</td><td class="n">48</td><td>VMware ESXi 8.0.3</td></tr><tr><td>esx-prd-02.ejemplo.local</td><td>PROD</td><td class="n">2</td><td class="n">24</td><td class="n">48</td><td>VMware ESXi 8.0.3</td></tr><tr><td>esx-prd-03.ejemplo.local</td><td>PROD</td><td class="n">2</td><td class="n">24</td><td class="n">48</td><td>VMware ESXi 8.0.3</td></tr><tr><td>esx-prd-04.ejemplo.local</td><td>PROD</td><td class="n">2</td><td class="n">24</td><td class="n">48</td><td>VMware ESXi 8.0.3</td></tr><tr><td>esx-prd-05.ejemplo.local</td><td>PROD-LEGACY</td><td class="n">2</td><td class="n">12</td><td class="n">32</td><td>VMware ESXi 8.0.2</td></tr><tr><td>esx-prd-06.ejemplo.local</td><td>PROD-LEGACY</td><td class="n">2</td><td class="n">12</td><td class="n">32</td><td>VMware ESXi 8.0.2</td></tr><tr><td>esx-dr-01.ejemplo.local</td><td>DR</td><td class="n">2</td><td class="n">10</td><td class="n">32</td><td>VMware ESXi 8.0.2</td></tr><tr><td>esx-dr-02.ejemplo.local</td><td>DR</td><td class="n">2</td><td class="n">10</td><td class="n">32</td><td>VMware ESXi 8.0.2</td></tr></tbody></table>
+  <h3>Sistemas operativos sin soporte o por vencer</h3>
+  <table><thead><tr><th>Sistema operativo</th><th class="n">VMs</th><th class="n">Encendidas</th><th>Fin de soporte</th>
+  <th>Estado</th></tr></thead><tbody><tr><td>Windows Server 2012 / 2012 R2</td><td class="n">21</td><td class="n">18</td><td>10 oct 2023</td><td>Vencido</td></tr><tr><td>CentOS 7</td><td class="n">7</td><td class="n">6</td><td>30 jun 2024</td><td>Vencido</td></tr><tr><td>Windows Server 2016</td><td class="n">27</td><td class="n">22</td><td>12 ene 2027</td><td>Vence en 12 meses</td></tr></tbody></table>
+  <p class="note">Fechas de fin de soporte estándar del fabricante, pendientes de verificar contra cada página de ciclo de vida.</p>
+</section>
+
+<section class="page">
+  <h2>Detalle por escenario</h2>
+  <h3>Costo de software en 3 años</h3>
+  <table><thead><tr><th>Escenario</th><th class="n">Desde</th><th class="n">Hasta</th><th>Base del rango</th></tr></thead>
+  <tbody><tr><td>Renovar VMware Cloud Foundation</td><td class="n">US$ 151,200</td><td class="n">US$ 345,600</td><td class="muted">Negociado: con preparación a sin preparación</td></tr><tr><td>Renovar vSphere Foundation</td><td class="n">US$ 58,320</td><td class="n">US$ 133,920</td><td class="muted">Negociado: con preparación a sin preparación</td></tr><tr><td>Migrar a Azure</td><td class="n">US$ 1,242,744</td><td class="n">US$ 2,695,719</td><td class="muted">eastus: compromiso 3 años a pago por uso</td></tr><tr><td>Migrar a Google Cloud</td><td class="n">US$ 1,281,846</td><td class="n">US$ 2,594,754</td><td class="muted">us-east1: compromiso 3 años a pago por uso</td></tr><tr><td>Migrar a Proxmox VE</td><td class="n">US$ 28,512</td><td class="n">US$ 57,024</td><td class="muted">Suscripción standard a premium, 16 sockets</td></tr></tbody></table>
+  <h3>Renovar VMware, costo anual en USD</h3>
+  <table><thead><tr><th>Edición</th><th class="n">Lista</th><th class="n">Negociado sin preparación</th><th class="n">Negociado con preparación</th></tr></thead>
+  <tbody><tr><td><b>VCF</b><br><span class="muted">320 núcleos licenciados, 320 TiB de vSAN incluidos</span></td><td class="n">112,000 a 128,000</td><td class="n">89,600 a 115,200</td><td class="n">50,400 a 89,600</td></tr><tr><td><b>VVF</b><br><span class="muted">320 núcleos licenciados, 80 TiB de vSAN incluidos</span></td><td class="n">43,200 a 49,600</td><td class="n">34,560 a 44,640</td><td class="n">19,440 a 34,720</td></tr></tbody></table>
+  <p class="note">"Con preparación" supone llegar a la negociación con inventario limpio, alternativa cotizada y
+  fecha de renovación bajo control. El mínimo de 72 núcleos por pedido está en disputa y no se aplicó.</p>
+  <h3>Nube pública</h3>
+  <table><thead><tr><th>Destino</th><th class="n">VMs ubicadas</th><th class="n">Sin instancia</th>
+  <th class="n">Cómputo / mes</th><th class="n">Disco / mes</th><th class="n">Anual (USD)</th></tr></thead><tbody><tr><td><b>AZURE</b> eastus</td><td class="n">157</td><td class="n">0</td><td class="n">US$ 67,267</td><td class="n">US$ 7,614</td><td class="n">414,248 a 898,573</td></tr><tr><td><b>GCP</b> us-east1</td><td class="n">157</td><td class="n">0</td><td class="n">US$ 66,309</td><td class="n">US$ 5,768</td><td class="n">427,282 a 864,918</td></tr></tbody></table>
+  <p class="note">Cada VM encendida va a la instancia más barata que cubre sus vCPU y RAM asignadas, no las usadas.
+  Windows a pago por uso, sin Azure Hybrid Benefit ni licencias propias. El rango va de compromiso a 3 años a pago por uso.</p>
+  <h3>Proxmox VE</h3>
+  <table><thead><tr><th>Suscripción</th><th class="n">Sockets</th><th class="n">Anual (USD)</th></tr></thead>
+  <tbody><tr><td>standard a premium</td><td class="n">16</td><td class="n">9,504 a 19,008</td></tr></tbody></table>
+  <p class="note">Solo suscripción de software. No incluye hardware nuevo, backup ni horas de migración.</p>
+</section>
+
+<section class="page">
+  <h2>Supuestos y fuentes</h2>
+  <p>Broadcom no publica lista de precios y cambia las reglas seguido. Cada cifra de licenciamiento sale de una
+  regla versionada con fuente y fecha. Si una regla cambia, el reporte se regenera.</p>
+  <table class="sources"><thead><tr><th>Regla</th><th>Estado</th><th>Fuente</th></tr></thead>
+  <tbody><tr><td>Mínimo de 16 núcleos por CPU</td><td><span class="tag tag-official">Oficial</span></td><td>Broadcom KB 313548: Counting Cores for VCF and vSphere Foundation and TiBs for vSAN <span class="muted">(sin fecha, revisado 28 oct 2026)</span><br>Broadcom VVF Specific Program Documentation, julio 2025 <span class="muted">(julio 2025, revisado 28 oct 2026)</span></td></tr><tr><td>Mínimo de 72 núcleos por pedido<br><span class="muted">No aplicado en este reporte</span></td><td><span class="tag tag-disputed">En disputa</span></td><td>Licenseware: VMware 72-Core Minimum vs 16-Core CPU Floor <span class="muted">(30 ago 2026, revisado 28 oct 2026)</span><br>AceMQ: VVF vs VCF, Price per Core (2026) <span class="muted">(22 oct 2026, revisado 28 oct 2026)</span></td></tr><tr><td>vSAN incluido por núcleo</td><td><span class="tag tag-official">Oficial</span></td><td>Broadcom KB 313548 <span class="muted">(sin fecha, revisado 28 oct 2026)</span><br>Broadcom VVF SPD julio 2025 <span class="muted">(julio 2025, revisado 28 oct 2026)</span></td></tr><tr><td>Precio de lista por núcleo y año</td><td><span class="tag tag-reported">Reportado</span></td><td>AceMQ: VCF 350 y VVF 135 por núcleo/año (Veeam Community y Rimini Street, verificado 20-oct-2026) <span class="muted">(22 oct 2026, revisado 28 oct 2026)</span><br>C4C Group: VCF ~400, VVF ~155, vSphere Standard ~55 por núcleo/año (revisado jul-2026) <span class="muted">(julio 2026, revisado 28 oct 2026)</span></td></tr><tr><td>Descuento negociado</td><td><span class="tag tag-reported">Reportado</span></td><td>Redress Compliance, nota de investigación renovaciones 2026 <span class="muted">(2026, revisado 28 oct 2026)</span></td></tr><tr><td>Recargo por renovación tardía<br><span class="muted">No aplicado en este reporte</span></td><td><span class="tag tag-reported">Reportado</span></td><td>Licenseware (memo de Arrow vía CRN) <span class="muted">(30 ago 2026, revisado 28 oct 2026)</span><br>ReadyWorks: The 20% Penalty Clause <span class="muted">(28 may 2026, revisado 28 oct 2026)</span></td></tr><tr><td>Disponibilidad de VVF en América</td><td><span class="tag tag-reported">Reportado</span></td><td>The Register: VMware kills vSphere Foundation in parts of EMEA <span class="muted">(11 dic 2025, revisado 28 oct 2026)</span></td></tr><tr><td>Fin de soporte general de vSphere 8</td><td><span class="tag tag-official">Oficial</span></td><td>Broadcom KB 459135: End of General Support for vSphere 8.0 <span class="muted">(sin fecha, revisado 28 oct 2026)</span></td></tr><tr><td>Suscripción Proxmox VE por socket</td><td><span class="tag tag-official">Oficial</span></td><td>Proxmox VE pricing <span class="muted">(revisado 28 oct 2026)</span></td></tr><tr><td>Tipo de cambio EUR a USD: 1.08</td><td><span class="tag tag-assumption">Supuesto</span></td><td>Tipo de cambio fijo de referencia; reemplazar por el del día en el reporte.</td></tr><tr><td>Precios de AZURE eastus</td><td><span class="tag tag-assumption">Supuesto</span></td><td>Precios ilustrativos, no descargados de la API ni cotizados</td></tr><tr><td>Precios de GCP us-east1</td><td><span class="tag tag-assumption">Supuesto</span></td><td>Precios ilustrativos, no descargados de la API ni cotizados</td></tr></tbody></table>
+</section>
+
+<section class="page">
+  <h2>Qué no mide este reporte</h2>
+  <ul>
+    <li>Uso real de CPU y RAM: dimensiona por lo asignado, así que la nube sale cara. El ajuste por uso real suele bajarla bastante.</li>
+    <li>Excedente de vSAN: RVTools no trae la capacidad cruda.</li>
+    <li>Dependencias entre aplicaciones, firewall, cambio de IPs y olas de migración.</li>
+    <li>Hardware, centro de datos, personal y costo de la migración en sí.</li>
+  </ul>
+  <h2>Próximos pasos</h2>
+  <ol class="steps">
+    <li><b>Confirmar la fecha de renovación</b> y el estado del contrato con el partner: define cuánto margen hay para negociar.</li>
+    <li><b>Evaluación formal de Baula</b>: dimensionamiento por uso real, precios del día y cotización de cada destino,
+      licencias propias de Windows y SQL, y un plan de olas para las VMs críticas.</li>
+    <li><b>Resolver los sistemas operativos vencidos</b> antes de elegir destino.</li>
+    <li><b>Retirar las VMs apagadas</b> que nadie reclama, para no licenciarlas ni migrarlas.</li>
+  </ol>
+  <footer>Baula Compass · baulashift.com · Estimación orientativa, no es asesoría legal ni contractual
+  ni una cotización de Broadcom, Microsoft, Google o Proxmox.</footer>
+</section>
+</body></html>

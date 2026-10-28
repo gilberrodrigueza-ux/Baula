@@ -17,8 +17,11 @@ pip install -r requirements.txt
 python -m compass mi-export.xlsx --catalog prices/azure-eastus.json
 python -m compass mi-export.xlsx --json          # resultado completo
 python -m compass mi-export.xlsx --late --years 3 # con recargo por renovación tardía
+python -m compass mi-export.xlsx --catalog prices/azure-eastus.json --client "Cliente S.A." --pdf reporte.pdf
 python -m pytest -q
 ```
+
+`--html` y `--pdf` generan el reporte para el cliente. El PDF se imprime con Chrome, Chromium o Edge en modo headless; si no lo encuentra, indicá la ruta en `BAULA_CHROME`. El reporte se marca como "datos de ejemplo" con `--example` o cuando algún catálogo de precios es de muestra.
 
 Opciones: `--order-minimum` aplica el mínimo de 72 núcleos por pedido (en disputa, apagado por defecto); `--proxmox-tier` elige el nivel de soporte.
 
@@ -33,6 +36,8 @@ Opciones: `--order-minimum` aplica el mínimo de 72 núcleos por pedido (en disp
 | Proxmox | `compass/proxmox.py` | Suscripción por socket sobre el mismo hardware. |
 | Reglas | `rules/*.json` | Cada regla con fuente, fecha y estado (`official`, `reported`, `disputed`, `to_verify`). |
 | Precios | `scripts/fetch_*_prices.py` | Azure Retail Prices API (sin clave) y Cloud Billing Catalog de GCP (pide `GCP_API_KEY`). Se corren cada semana en GitHub Actions. |
+| Reporte | `compass/report.py` | HTML autocontenido y PDF: resumen, inventario, escenarios, supuestos con fuente y fecha, próximos pasos. |
+| Reporte de ejemplo | `examples/demo/` | Empresa ficticia (182 VMs, 8 hosts) con precios de nube ilustrativos, para mostrar en entrevistas. Se regenera con `scripts/make_demo_rvtools.py`. |
 | Exports de prueba | `scripts/make_sample_rvtools.py` | Datos inventados, en dos formas de columnas distintas. |
 
 ### Límites conocidos

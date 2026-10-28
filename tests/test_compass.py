@@ -148,3 +148,15 @@ def test_analyze_and_cli(capsys):
     assert main([str(FIX / "sample_a.xlsx"), "--catalog", str(FIX / "catalog_sample.json")]) == 0
     out = capsys.readouterr().out
     assert "PRECIOS DE MUESTRA" in out and "120 núcleos licenciados" in out
+
+
+# --- reporte ---
+
+def test_report_html_marks_sample_prices_and_lists_sources():
+    from compass.report import render_html
+    r = analyze(FIX / "sample_a.xlsx", [FIX / "catalog_sample.json"], today=TODAY)
+    html = render_html(r, client="Cliente <prueba>", today=TODAY)
+    assert "Datos de ejemplo" in html  # el catálogo de muestra fuerza la marca
+    assert "Cliente &lt;prueba&gt;" in html
+    assert "KB 313548" in html and "En disputa" in html
+    assert "Renovar VMware Cloud Foundation" in html and "Migrar a Proxmox VE" in html
