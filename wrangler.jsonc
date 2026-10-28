@@ -5,6 +5,6 @@
   "assets": {
     "directory": "./web"
   },
-  // requerido por `wrangler preview`, que Workers Builds corre en las ramas que no son main
+  // Required by `wrangler preview`, which Workers Builds runs on non-production branches.
   "previews": {}
 }
