@@ -10,12 +10,14 @@ python3 -m http.server 8000
 # abrir http://localhost:8000
 ```
 
-## Publicar con Cloudflare Pages
+## Publicar en Cloudflare (Workers con assets estáticos)
 
-1. Cloudflare → Workers & Pages → Create → Pages → Connect to Git → repo `baula`.
-2. Production branch: `main`. Framework preset: None. Build command: vacío. Build output directory: `web`.
-3. En el proyecto de Pages → Custom domains → agregar `baulashift.com` y `www.baulashift.com`.
-   Si el dominio está en Cloudflare, los registros DNS se crean solos. Si está en otro registrador, cambiar los nameservers a Cloudflare o crear un CNAME hacia `<proyecto>.pages.dev`.
+El `wrangler.jsonc` de la raíz del repo publica `web/` como assets estáticos del Worker `baula`.
+
+1. Cloudflare → Workers & Pages → el Worker `baula` (conectado al repo, branch `main`). Cada push a `main` despliega solo.
+2. Settings → Domains & Routes → Add → Custom domain → `baulashift.com`, y otra vez con `www.baulashift.com`. Como el dominio está en Cloudflare, los registros DNS se crean solos.
+
+`web/.assetsignore` evita que este README quede publicado.
 
 ## Correo de contacto
 
