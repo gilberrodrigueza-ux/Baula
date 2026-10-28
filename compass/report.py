@@ -13,7 +13,7 @@ from datetime import date
 from html import escape
 from pathlib import Path
 
-from .rules import load_rules
+from .rules import RULES_DIR, load_rules
 
 STATUS_LABEL = {
     "official": "Oficial",
@@ -30,7 +30,7 @@ SCENARIO_LABEL = {
     "PROXMOX": "Migrar a Proxmox VE",
     "HYPERV": "Migrar a Hyper-V",
     "NUTANIX": "Migrar a Nutanix AHV",
-    "OLVM": "Migrar a Oracle Linux Virtualization Manager",
+    "OLVM": "Migrar a Oracle Linux KVM",
 }
 
 
@@ -138,6 +138,18 @@ def _fecha(iso: str | None) -> str:
     return f"{int(parts[2])} {MESES[int(parts[1]) - 1][:3]} {parts[0]}"
 
 
+OTHER_RULES = {"hyperv": "Hyper-V", "nutanix": "Nutanix", "oracle": "Oracle Linux KVM"}
+RULE_LABELS = {
+    "min_cores_per_cpu": "mínimo de núcleos por CPU",
+    "min_cores_per_server": "mínimo de núcleos por servidor",
+    "datacenter_usd_per_16_cores": "Datacenter por 16 núcleos",
+    "software_assurance_rate": "Software Assurance anual",
+    "list_price_usd_per_core_year": "precio por núcleo y año",
+    "negotiated_discount": "descuento negociado",
+    "support_usd_per_cpu_pair_year": "soporte por par de CPUs",
+}
+
+
 def _sources_rows(broadcom: dict, proxmox: dict, catalogs: list[dict]) -> str:
     names = {
         "min_cores_per_cpu": "Mínimo de 16 núcleos por CPU",
@@ -160,6 +172,16 @@ def _sources_rows(broadcom: dict, proxmox: dict, catalogs: list[dict]) -> str:
     p = proxmox["sources"][0]
     rows.append(f'<tr><td>Suscripción Proxmox VE por socket</td><td><span class="tag tag-official">Oficial</span></td>'
                 f'<td>{escape(p["title"])} <span class="muted">(revisado {_fecha(p["checked"])})</span></td></tr>')
+    for name, label in OTHER_RULES.items():
+        if not (RULES_DIR / f"{name}.json").exists():
+            continue
+        for key, r in load_rules(name).items():
+            if not isinstance(r, dict) or "status" not in r or key not in RULE_LABELS:
+                continue
+            src = "<br>".join(f'{escape(x["title"])} <span class="muted">({_fecha(x["source_date"])}, '
+                              f'revisado {_fecha(x["checked"])})</span>' for x in r["sources"]) or escape(r.get("note", ""))
+            rows.append(f'<tr><td>{label}: {RULE_LABELS[key]}</td><td><span class="tag tag-{r["status"]}">'
+                        f'{STATUS_LABEL[r["status"]]}</span></td><td>{src}</td></tr>')
     fx = proxmox["eur_to_usd"]
     rows.append(f'<tr><td>Tipo de cambio EUR a USD: {fx["value"]}</td><td><span class="tag tag-assumption">Supuesto</span></td>'
                 f'<td>{escape(fx["note"])}</td></tr>')
@@ -170,6 +192,27 @@ def _sources_rows(broadcom: dict, proxmox: dict, catalogs: list[dict]) -> str:
         rows.append(f'<tr><td>Precios de {escape(c["provider"].upper())} {escape(c["region"])}</td>'
                     f'<td><span class="tag tag-{status}">{STATUS_LABEL[status]}</span></td><td>{text}</td></tr>')
     return "".join(rows)
+
+
+def _edition(key: str, s: dict) -> str:
+    if key == "PROXMOX":
+        return f"Suscripción {s['tier']} a {s['upper_tier']}"
+    return s.get("edition", "")
+
+
+def _scope(s: dict) -> str:
+    # la aclaración común (solo software, sin hardware ni migración) va una vez, debajo de la tabla
+    note = s.get("note", "")
+    for common in ("Solo licencias y soporte del software.", "Solo suscripción de software.",
+                   "No incluye hardware nuevo, backup ni horas de migración."):
+        note = note.replace(common, "")
+    return " ".join(note.split())
+
+
+def _basis(key: str, s: dict) -> str:
+    if key == "PROXMOX":
+        return f"{s['sockets']} sockets, en EUR convertidos a {s['eur_to_usd']} USD"
+    return s.get("basis", "")
 
 
 def render_html(result: dict, *, client: str = "", example: bool = False,
@@ -186,7 +229,7 @@ def render_html(result: dict, *, client: str = "", example: bool = False,
     example = example or any(c["sample"] for c in catalogs)
 
     banner = ('<div class="banner">Datos de ejemplo. Empresa, inventario y precios de nube ficticios. '
-              'Las reglas de Broadcom y Proxmox son las reales del motor al día de hoy.</div>') if example else ""
+              'Las reglas de licenciamiento (Broadcom, Microsoft, Nutanix, Oracle, Proxmox) son las reales del motor al día de hoy.</div>') if example else ""
 
     hosts = "".join(
         f'<tr><td>{escape(h["name"])}</td><td>{escape(h["cluster"])}</td><td class="n">{h["sockets"]}</td>'
@@ -215,7 +258,11 @@ def render_html(result: dict, *, client: str = "", example: bool = False,
         f'<tr><td><b>{escape(s["provider"].upper())}</b> {escape(s["region"])}</td><td class="n">{s["vms_placed"]}</td>'
         f'<td class="n">{len(s["vms_unplaced"])}</td><td class="n">{_usd(s["compute_usd_month"])}</td>'
         f'<td class="n">{_usd(s["storage_usd_month"])}</td><td class="n">{_range(s["annual_usd"])}</td></tr>' for s in clouds)
-    px = sc["PROXMOX"]
+    onprem = [(k, s) for k, s in sc.items() if k not in ("VCF", "VVF") and "region" not in s]
+    onprem_rows = "".join(
+        f'<tr><td><b>{escape(SCENARIO_LABEL.get(k, k).removeprefix("Migrar a "))}</b><br><span class="muted">'
+        f'{escape(_edition(k, s))}</span></td><td class="n">{_range(s["annual_usd"])}</td>'
+        f'<td class="muted">{escape(_basis(k, s))}. {escape(_scope(s))}</td></tr>' for k, s in onprem)
 
     findings_html = "".join(f"<li>{f}</li>" for f in findings(result, rows, broadcom, today))
     term_rows = "".join(
@@ -243,7 +290,7 @@ def render_html(result: dict, *, client: str = "", example: bool = False,
   <h3>Costo de software en {years} años, en USD</h3>
   {range_chart(rows)}
   <p class="note">Solo software y nube. No incluye hardware, centro de datos, energía, personal, backup ni horas de
-  migración. Renovar y Proxmox siguen sobre el hardware actual; la nube lo reemplaza. Comparar los totales
+  migración. Renovar y los otros hipervisores siguen sobre el hardware actual; la nube lo reemplaza. Comparar los totales
   sin ese ajuste favorece a quedarse en sitio.</p>
 </section>
 
@@ -276,15 +323,19 @@ def render_html(result: dict, *, client: str = "", example: bool = False,
   <tbody>{"".join(detail)}</tbody></table>
   <p class="note">"Con preparación" supone llegar a la negociación con inventario limpio, alternativa cotizada y
   fecha de renovación bajo control. El mínimo de 72 núcleos por pedido está en disputa y no se aplicó.</p>
+</section>
+
+<section class="page">
+  <h2>Destinos alternativos</h2>
   <h3>Nube pública</h3>
   <table><thead><tr><th>Destino</th><th class="n">VMs ubicadas</th><th class="n">Sin instancia</th>
   <th class="n">Cómputo / mes</th><th class="n">Disco / mes</th><th class="n">Anual (USD)</th></tr></thead><tbody>{cloud_rows}</tbody></table>
   <p class="note">Cada VM encendida va a la instancia más barata que cubre sus vCPU y RAM asignadas, no las usadas.
   Windows a pago por uso, sin Azure Hybrid Benefit ni licencias propias. El rango va de compromiso a 3 años a pago por uso.</p>
-  <h3>Proxmox VE</h3>
-  <table><thead><tr><th>Suscripción</th><th class="n">Sockets</th><th class="n">Anual (USD)</th></tr></thead>
-  <tbody><tr><td>{escape(px["tier"])} a {escape(px["upper_tier"])}</td><td class="n">{px["sockets"]}</td><td class="n">{_range(px["annual_usd"])}</td></tr></tbody></table>
-  <p class="note">{escape(px["note"])}</p>
+  <h3>Otros hipervisores sobre el hardware actual</h3>
+  <table class="onprem"><thead><tr><th>Opción</th><th class="n">Anual (USD)</th><th>Base y alcance</th></tr></thead>
+  <tbody>{onprem_rows}</tbody></table>
+  <p class="note">Solo licencias y soporte del software. No incluye hardware nuevo, backup ni horas de migración.</p>
 </section>
 
 <section class="page">
@@ -312,7 +363,7 @@ def render_html(result: dict, *, client: str = "", example: bool = False,
     <li><b>Retirar las VMs apagadas</b> que nadie reclama, para no licenciarlas ni migrarlas.</li>
   </ol>
   <footer>Baula Compass · baulashift.com · Estimación orientativa, no es asesoría legal ni contractual
-  ni una cotización de Broadcom, Microsoft, Google o Proxmox.</footer>
+  ni una cotización de Broadcom, Microsoft, Google, Nutanix, Oracle o Proxmox.</footer>
 </section>
 </body></html>
 """
@@ -390,6 +441,7 @@ tr { break-inside:avoid; }
   border:1px solid currentColor; }
 .tag-official { color:var(--teal-ink); } .tag-reported { color:var(--sea); }
 .tag-disputed, .tag-to_verify, .tag-assumption { color:var(--warn); }
+.onprem td:first-child { width:28%; } .onprem td:last-child { font-size:8.5pt; }
 .sources td:first-child { width:30%; } .sources td:nth-child(2) { width:13%; }
 .steps li { margin:4px 0; }
 footer { margin-top:18px; padding-top:8px; border-top:1px solid var(--line); font-size:8pt; color:var(--muted); }

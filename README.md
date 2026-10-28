@@ -38,7 +38,7 @@ Opciones: `--order-minimum` aplica el mínimo de 72 núcleos por pedido (en disp
 | Reglas | `rules/*.json` | Cada regla con fuente, fecha y estado (`official`, `reported`, `disputed`, `to_verify`). |
 | Precios | `scripts/fetch_*_prices.py` | Azure Retail Prices API (sin clave) y Cloud Billing Catalog de GCP (pide `GCP_API_KEY`). Se corren cada semana en GitHub Actions. |
 | Reporte | `compass/report.py` | HTML autocontenido y PDF: resumen, inventario, escenarios, supuestos con fuente y fecha, próximos pasos. |
-| Reporte de ejemplo | `examples/demo/` | Empresa ficticia (182 VMs, 8 hosts) con precios de nube ilustrativos, para mostrar en entrevistas. Se regenera con `scripts/make_demo_rvtools.py`. |
+| Reporte de ejemplo | `examples/demo/` | Empresa ficticia (182 VMs, 8 hosts) con precios de nube ilustrativos y los 8 escenarios, para mostrar en entrevistas. Se regenera con `scripts/make_demo_rvtools.py`. |
 | Exports de prueba | `scripts/make_sample_rvtools.py` | Datos inventados, en dos formas de columnas distintas. |
 
 ### Límites conocidos
