@@ -1,0 +1,8 @@
+// Cloudflare Workers config: serves the static landing page in web/ as assets.
+{
+  "name": "baula",
+  "compatibility_date": "2026-06-01",
+  "assets": {
+    "directory": "./web"
+  }
+}
