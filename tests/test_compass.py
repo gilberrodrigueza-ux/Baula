@@ -151,6 +151,11 @@ def test_hyperv_core_minimums(inv):
     assert r["annual_usd"] == {"low": round(license_usd / 3), "high": round(license_usd / 3 + license_usd * 0.25)}
 
 
+def test_hyperv_existing_datacenter_pays_only_sa(inv):
+    r = hyperv_cost(inv.hosts, load_rules("hyperv"), owns_datacenter=True)
+    assert r["annual_usd"] == {"low": 0, "high": round(104 * 6771 / 16 * 0.25)}
+
+
 def test_hyperv_min_8_per_cpu():
     assert hyperv_cost([host(2, 6)], load_rules("hyperv"))["licensed_cores"] == 16
     assert hyperv_cost([host(4, 6)], load_rules("hyperv"))["licensed_cores"] == 32

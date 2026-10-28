@@ -12,7 +12,7 @@ from .rvtools import Host
 NOTE = "Solo licencias y soporte del software. No incluye hardware nuevo, backup ni horas de migración."
 
 
-def hyperv_cost(hosts: list[Host], rules: dict, term_years: int = 3) -> dict:
+def hyperv_cost(hosts: list[Host], rules: dict, term_years: int = 3, *, owns_datacenter: bool = False) -> dict:
     per_cpu = rules["min_cores_per_cpu"]["value"]
     per_server = rules["min_cores_per_server"]["value"]
     cores = sum(max(h.sockets * max(h.cores_per_cpu, per_cpu), per_server) for h in hosts)
@@ -20,15 +20,22 @@ def hyperv_cost(hosts: list[Host], rules: dict, term_years: int = 3) -> dict:
     license_usd = cores * per_core
     sa = rules["software_assurance_rate"]["value"]
     # la licencia es perpetua: se reparte en el plazo para compararla con las suscripciones
-    low = license_usd / term_years
-    high = low + license_usd * sa
+    if owns_datacenter:
+        # el cliente ya licencia Datacenter para sus VMs Windows sobre VMware: solo paga SA, si la mantiene
+        low, high = 0.0, license_usd * sa
+        basis = f"Datacenter ya licenciado; el alto es Software Assurance de {sa:.0%} anual"
+    else:
+        low = license_usd / term_years
+        high = low + license_usd * sa
+        basis = f"Licencia perpetua repartida en {term_years} años; el alto suma Software Assurance de {sa:.0%} anual"
     return {
         "edition": "Windows Server 2025 Datacenter",
         "licensed_cores": cores,
         "license_usd": round(license_usd),
         "term_years": term_years,
         "annual_usd": {"low": round(low), "high": round(high)},
-        "basis": f"Licencia perpetua repartida en {term_years} años; el alto suma Software Assurance de {sa:.0%} anual",
+        "owns_datacenter": owns_datacenter,
+        "basis": basis,
         "note": "Incluye VMs Windows Server ilimitadas en cada host. No incluye CALs ni System Center. " + NOTE,
         "rules_version": rules["rules_version"],
     }
