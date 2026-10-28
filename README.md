@@ -6,7 +6,7 @@ Este repo contiene, por ahora, solo el prototipo del motor de **Baula Compass**.
 
 ## Baula Compass (prototipo)
 
-Prototipo en Python del motor de Baula Compass: toma un export de RVTools y compara el costo de renovar VMware (VCF y VVF) contra salir a Azure, GCP o Proxmox. Sirve para validar las fórmulas con exports reales antes de pasar el motor al navegador (TypeScript).
+Prototipo en Python del motor de Baula Compass: toma un export de RVTools y compara el costo de renovar VMware (VCF y VVF) contra salir a Azure, GCP, Proxmox, Hyper-V, Nutanix AHV u Oracle Linux KVM (OLVM). Sirve para validar las fórmulas con exports reales antes de pasar el motor al navegador (TypeScript).
 
 **Estado (28-oct-2026):** prototipo de fase 1, adelantado mientras corre la fase 0. Probado solo con exports sintéticos y con un catálogo de precios de muestra. Los precios reales de Azure y GCP todavía no se descargaron.
 
@@ -31,6 +31,7 @@ Opciones: `--order-minimum` aplica el mínimo de 72 núcleos por pedido (en disp
 | Renovación VCF/VVF | `compass/licensing.py` | Mínimo de 16 núcleos por CPU, vSAN incluido, rango de lista y negociado, recargo opcional. |
 | Nube | `compass/cloud.py` | Instancia más barata que cubre vCPU y RAM asignadas; rango entre pago por uso y compromiso de 3 años. |
 | Proxmox | `compass/proxmox.py` | Suscripción por socket sobre el mismo hardware. |
+| Hyper-V, Nutanix, Oracle KVM | `compass/onprem.py` | Windows Server Datacenter (mínimo 8 núcleos por CPU y 16 por host, licencia repartida en el plazo); Nutanix NCI por núcleo con descuento; soporte Oracle Linux por par de CPUs. |
 | Reglas | `rules/*.json` | Cada regla con fuente, fecha y estado (`official`, `reported`, `disputed`, `to_verify`). |
 | Precios | `scripts/fetch_*_prices.py` | Azure Retail Prices API (sin clave) y Cloud Billing Catalog de GCP (pide `GCP_API_KEY`). Se corren cada semana en GitHub Actions. |
 | Exports de prueba | `scripts/make_sample_rvtools.py` | Datos inventados, en dos formas de columnas distintas. |

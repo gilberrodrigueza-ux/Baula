@@ -50,6 +50,8 @@ def main(argv=None) -> int:
             print(f"    lista {_usd(s['annual_list_usd'])} · negociado sin preparación {_usd(n['unprepared'])} · con preparación {_usd(n['prepared'])}")
         elif name == "PROXMOX":
             print(f"  Proxmox ({s['tier']}/{s['upper_tier']}, {s['sockets']} sockets): {_usd(s['annual_usd'])}")
+        elif name in ("HYPERV", "NUTANIX", "OLVM"):
+            print(f"  {s['edition']}: {_usd(s['annual_usd'])} ({s['basis']})")
         else:
             tag = " [PRECIOS DE MUESTRA]" if s["catalog_is_sample"] else ""
             print(f"  {name} {s['region']}{tag}: {_usd(s['annual_usd'])} · {s['vms_placed']} VMs ubicadas, {len(s['vms_unplaced'])} sin instancia")
