@@ -1,0 +1,20 @@
+{
+  "provider": "sample",
+  "region": "test-1",
+  "currency": "USD",
+  "fetched": "2026-10-28T00:00:00+00:00",
+  "source": "Precios inventados para pruebas. No usar en reportes.",
+  "sample": true,
+  "hours_per_month": 730,
+  "commit_discount_3yr": 0.5,
+  "storage": {"name": "disco de prueba", "usd_per_gib_month": 0.1},
+  "instances": [
+    {"name": "s-2-8", "vcpus": 2, "memory_gib": 8, "linux_hour": 0.1, "windows_hour": 0.2},
+    {"name": "c-4-8", "vcpus": 4, "memory_gib": 8, "linux_hour": 0.15, "windows_hour": 0.3},
+    {"name": "s-4-16", "vcpus": 4, "memory_gib": 16, "linux_hour": 0.2, "windows_hour": 0.4},
+    {"name": "m-4-32", "vcpus": 4, "memory_gib": 32, "linux_hour": 0.25, "windows_hour": 0.45},
+    {"name": "s-8-32", "vcpus": 8, "memory_gib": 32, "linux_hour": 0.4, "windows_hour": 0.8},
+    {"name": "m-8-64", "vcpus": 8, "memory_gib": 64, "linux_hour": 0.5, "windows_hour": 0.9},
+    {"name": "s-16-64", "vcpus": 16, "memory_gib": 64, "linux_hour": 0.8, "windows_hour": 1.6}
+  ]
+}
