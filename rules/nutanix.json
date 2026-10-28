@@ -1,0 +1,31 @@
+{
+  "_comment": "Nutanix Cloud Infrastructure (NCI) con AHV, suscripción por núcleo físico. Nutanix no publica lista de precios.",
+  "rules_version": "2026-10-28",
+  "min_cores_per_cpu": {
+    "value": 0,
+    "status": "reported",
+    "note": "No hay mínimo publicado por CPU ni por pedido. El clúster de producción mínimo es de 3 nodos.",
+    "sources": [
+      {"title": "Licenseware wiki: Nutanix Cloud Platform licensing", "url": "https://wiki.licenseware.io/wiki/nutanix-cloud-platform-licensing/", "source_date": "2026-10-07", "checked": "2026-10-28"},
+      {"title": "Compare the Cloud: Renew VCF, move to Nutanix or migrate to Proxmox", "url": "https://www.comparethecloud.net/articles/renew-vmware-cloud-foundation-move-to-nutanix-or-migrate-to-proxmox-ve", "source_date": "2026-09-30", "checked": "2026-10-28"}
+    ]
+  },
+  "list_price_usd_per_core_year": {
+    "value": {"pro": 649, "ultimate": 1148},
+    "status": "reported",
+    "note": "Pro: precio de revendedor con soporte de producción. Ultimate: cifra sin fuente citada, solo referencia. Hay reportes de 70 a 130 por núcleo para NCP Pro a volumen empresarial, que no aplican a una empresa mediana.",
+    "sources": [
+      {"title": "CheckThat.ai: Nutanix pricing", "url": "https://checkthat.ai/brands/nutanix/pricing", "source_date": "2026", "checked": "2026-10-28"},
+      {"title": "Compare the Cloud (cita el precio de NCI Pro)", "url": "https://www.comparethecloud.net/articles/renew-vmware-cloud-foundation-move-to-nutanix-or-migrate-to-proxmox-ve", "source_date": "2026-09-30", "checked": "2026-10-28"}
+    ]
+  },
+  "negotiated_discount": {
+    "value": {"low": 0.35, "high": 0.55},
+    "status": "reported",
+    "note": "Descuento típico cuando Nutanix reemplaza a VMware (35-45% medianos, 45-55% grandes).",
+    "sources": [
+      {"title": "VendorBenchmark: Nutanix Cloud Platform pricing 2026", "url": "https://vendorbenchmark.com/vendors/nutanix-cloud-platform-pricing", "source_date": "2026", "checked": "2026-10-28"}
+    ]
+  },
+  "default_edition": "pro"
+}

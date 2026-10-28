@@ -1,4 +1,4 @@
-"""Une las piezas: inventario, renovación VCF/VVF, nubes y Proxmox."""
+"""Une las piezas: inventario, renovación VCF/VVF, nubes, Proxmox, Hyper-V, Nutanix y Oracle KVM."""
 from __future__ import annotations
 
 from datetime import date
@@ -8,6 +8,7 @@ from . import rvtools
 from .cloud import cloud_cost, load_catalog
 from .inventory import summarize
 from .licensing import renewal_cost
+from .onprem import hyperv_cost, nutanix_cost, olvm_cost
 from .proxmox import proxmox_cost
 from .rules import load_rules
 
@@ -15,7 +16,7 @@ from .rules import load_rules
 def analyze(export_path: str | Path, catalogs: list[str | Path] = (), *,
             term_years: int = 3, late_renewal: bool = False,
             apply_order_minimum: bool | None = None,
-            proxmox_tier: str | None = None, today: date | None = None) -> dict:
+            proxmox_tier: str | None = None, owns_datacenter: bool = False, today: date | None = None) -> dict:
     inv = rvtools.load(export_path)
     broadcom = load_rules("broadcom")
     result = {
@@ -30,4 +31,7 @@ def analyze(export_path: str | Path, catalogs: list[str | Path] = (), *,
         catalog = load_catalog(path)
         result["scenarios"][catalog["provider"].upper()] = cloud_cost(inv.vms, catalog)
     result["scenarios"]["PROXMOX"] = proxmox_cost(inv.hosts, load_rules("proxmox"), proxmox_tier)
+    result["scenarios"]["HYPERV"] = hyperv_cost(inv.hosts, load_rules("hyperv"), term_years, owns_datacenter=owns_datacenter)
+    result["scenarios"]["NUTANIX"] = nutanix_cost(inv.hosts, load_rules("nutanix"))
+    result["scenarios"]["OLVM"] = olvm_cost(inv.hosts, load_rules("oracle"))
     return result
