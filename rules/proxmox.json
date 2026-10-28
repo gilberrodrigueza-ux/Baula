@@ -1,0 +1,16 @@
+{
+  "_comment": "Suscripciones de Proxmox VE, precio en EUR por socket de CPU por año. Se cobra por socket, no por núcleo.",
+  "rules_version": "2026-10-28",
+  "currency": "EUR",
+  "eur_to_usd": {"value": 1.08, "status": "assumption", "note": "Tipo de cambio fijo de referencia; reemplazar por el del día en el reporte."},
+  "tiers": {
+    "community": {"eur_per_socket_year": 120, "support": "Sin tickets, solo foro"},
+    "basic": {"eur_per_socket_year": 370, "support": "3 tickets/año, respuesta en 1 día hábil"},
+    "standard": {"eur_per_socket_year": 550, "support": "10 tickets/año, 4 h en críticos"},
+    "premium": {"eur_per_socket_year": 1100, "support": "Tickets ilimitados, 2 h en críticos, 24/7"}
+  },
+  "default_tier": "standard",
+  "sources": [
+    {"title": "Proxmox VE pricing", "url": "https://www.proxmox.com/en/products/proxmox-virtual-environment/pricing", "source_date": null, "checked": "2026-10-28"}
+  ]
+}

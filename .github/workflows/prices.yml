@@ -1,0 +1,27 @@
+name: Actualizar precios de nube
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+jobs:
+  prices:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GCP_API_KEY: ${{ secrets.GCP_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/fetch_azure_prices.py --region eastus --out prices/azure-eastus.json
+      - name: GCP (solo si hay clave)
+        if: ${{ env.GCP_API_KEY != '' }}
+        run: python scripts/fetch_gcp_prices.py --region us-east1 --out prices/gcp-us-east1.json
+      - run: |
+          git config user.name "baula-bot"
+          git config user.email "baula-bot@users.noreply.github.com"
+          git add prices/
+          git diff --cached --quiet || git commit -m "Actualizar precios de nube"
+          git push

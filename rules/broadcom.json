@@ -1,0 +1,82 @@
+{
+  "_comment": "Reglas de licenciamiento de VMware by Broadcom. Cada regla lleva fuente, fecha de la fuente y fecha de verificación. status: official (documento de Broadcom), reported (partners o analistas), disputed (fuentes contradictorias). Revisar mensualmente.",
+  "rules_version": "2026-10-28",
+  "rules": {
+    "min_cores_per_cpu": {
+      "value": 16,
+      "status": "official",
+      "applies_to": ["VCF", "VVF"],
+      "note": "Cada CPU física se licencia con al menos 16 núcleos, aunque tenga menos. Se cuentan también los núcleos deshabilitados por BIOS.",
+      "sources": [
+        {"title": "Broadcom KB 313548: Counting Cores for VCF and vSphere Foundation and TiBs for vSAN", "url": "https://knowledge.broadcom.com/external/article/313548", "source_date": null, "checked": "2026-10-28"},
+        {"title": "Broadcom VVF Specific Program Documentation, julio 2025", "url": "https://ftpdocs.broadcom.com/cadocs/0/contentimages/VVF_SPD_July2025.pdf", "source_date": "2025-07", "checked": "2026-10-28"}
+      ]
+    },
+    "min_cores_per_order": {
+      "value": 72,
+      "status": "disputed",
+      "default_enabled": false,
+      "applies_to": ["VCF", "VVF"],
+      "note": "Mínimo de 72 núcleos por línea de pedido reportado desde el 10-abr-2025 por un memo de Arrow (CRN). Heise iX reportó el mismo día que se seguía pudiendo comprar desde 16 y Broadcom negó un cambio. Las páginas oficiales revisadas en ago-2026 no lo mencionan. Algunos partners lo siguen citando en oct-2026. Se ofrece como opción, apagada por defecto.",
+      "sources": [
+        {"title": "Licenseware: VMware 72-Core Minimum vs 16-Core CPU Floor", "url": "https://licenseware.io/major-update-for-vmware-customers-min-licensing-requirement-increases-from-16-to-72-cores/", "source_date": "2026-08-30", "checked": "2026-10-28"},
+        {"title": "AceMQ: VVF vs VCF, Price per Core (2026)", "url": "https://acemq.com/blogs/vmware-cloud-foundation-vs-vsphere-foundation/", "source_date": "2026-10-22", "checked": "2026-10-28"}
+      ]
+    },
+    "vsan_tib_per_core": {
+      "value": {"VCF": 1.0, "VVF": 0.25},
+      "status": "official",
+      "note": "TiB crudos de vSAN incluidos por núcleo licenciado. En VVF el total se redondea hacia arriba al siguiente TiB. RVTools no reporta la capacidad cruda de vSAN, así que el excedente se calcula aparte.",
+      "sources": [
+        {"title": "Broadcom KB 313548", "url": "https://knowledge.broadcom.com/external/article/313548", "source_date": null, "checked": "2026-10-28"},
+        {"title": "Broadcom VVF SPD julio 2025", "url": "https://ftpdocs.broadcom.com/cadocs/0/contentimages/VVF_SPD_July2025.pdf", "source_date": "2025-07", "checked": "2026-10-28"}
+      ]
+    },
+    "list_price_usd_per_core_year": {
+      "value": {
+        "VCF": {"low": 350, "high": 400},
+        "VVF": {"low": 135, "high": 155}
+      },
+      "status": "reported",
+      "note": "Broadcom no publica lista de precios; el precio llega por cotización de partner. Rango tomado de precios de lista reportados por partners. Las cifras de Redress (300 VCF, 120 VVF) son ilustrativas, no de mercado, y no se usan.",
+      "sources": [
+        {"title": "AceMQ: VCF 350 y VVF 135 por núcleo/año (Veeam Community y Rimini Street, verificado 20-oct-2026)", "url": "https://acemq.com/blogs/vmware-cloud-foundation-vs-vsphere-foundation/", "source_date": "2026-10-22", "checked": "2026-10-28"},
+        {"title": "C4C Group: VCF ~400, VVF ~155, vSphere Standard ~55 por núcleo/año (revisado jul-2026)", "url": "https://www.c4cgroup.co.uk/guides/vmware-renewal-calculator/", "source_date": "2026-07", "checked": "2026-10-28"}
+      ]
+    },
+    "negotiated_discount": {
+      "value": {"unprepared": {"low": 0.10, "high": 0.20}, "prepared": {"low": 0.30, "high": 0.55}},
+      "status": "reported",
+      "note": "Descuento sobre lista. Hipótesis a calibrar con las entrevistas de fase 0 (pregunta: descuento recibido).",
+      "sources": [
+        {"title": "Redress Compliance, nota de investigación renovaciones 2026", "url": "https://redresscompliance.com/assets/docs/research-notes/broadcom-vmware-renewal-2026-early-renewal.pdf", "source_date": "2026", "checked": "2026-10-28"}
+      ]
+    },
+    "late_renewal_surcharge": {
+      "value": 0.20,
+      "status": "reported",
+      "default_enabled": false,
+      "note": "Recargo de 20% sobre el primer año de suscripción si se renueva fuera de la ventana, aplicado retroactivamente. Reportado desde el memo de Arrow (2025) y repetido en análisis de 2026; no está en un documento público de Broadcom.",
+      "sources": [
+        {"title": "Licenseware (memo de Arrow vía CRN)", "url": "https://licenseware.io/major-update-for-vmware-customers-min-licensing-requirement-increases-from-16-to-72-cores/", "source_date": "2026-08-30", "checked": "2026-10-28"},
+        {"title": "ReadyWorks: The 20% Penalty Clause", "url": "https://www.readyworks.ai/blog/the-20-penalty-clause-nobody-talked-about-inside-broadcoms-vmware-renewal-math", "source_date": "2026-05-28", "checked": "2026-10-28"}
+      ]
+    },
+    "vvf_availability": {
+      "value": "available_americas",
+      "status": "reported",
+      "note": "VVF dejó de venderse en algunos países de EMEA desde nov-2025. No hay reportes para América; confirmar con el partner del cliente.",
+      "sources": [
+        {"title": "The Register: VMware kills vSphere Foundation in parts of EMEA", "url": "https://www.theregister.com/2025/12/11/vmware_kills_vsphere_foundation_parts_emea/", "source_date": "2025-12-11", "checked": "2026-10-28"}
+      ]
+    },
+    "vsphere8_end_of_general_support": {
+      "value": "2027-10-11",
+      "status": "official",
+      "note": "Fin de soporte general de vSphere 8.0 y ESXi 8.x. Disparador para quienes se quedaron en perpetuo.",
+      "sources": [
+        {"title": "Broadcom KB 459135: End of General Support for vSphere 8.0", "url": "https://knowledge.broadcom.com/external/article/459135/end-of-general-support-for-vsphere-80.html", "source_date": null, "checked": "2026-10-28"}
+      ]
+    }
+  }
+}

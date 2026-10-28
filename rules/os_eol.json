@@ -1,0 +1,22 @@
+{
+  "_comment": "Fin de soporte estándar del fabricante por sistema operativo. El match es por subcadena, en orden, sobre el nombre del SO que reporta RVTools (sin distinguir mayúsculas). status to_verify: fecha cargada de memoria, falta confirmar contra la página de ciclo de vida del fabricante.",
+  "rules_version": "2026-10-28",
+  "entries": [
+    {"match": "windows server 2003", "label": "Windows Server 2003", "end_of_support": "2015-07-14", "status": "to_verify", "source": "https://learn.microsoft.com/lifecycle/products/windows-server-2003-"},
+    {"match": "windows server 2008", "label": "Windows Server 2008 / 2008 R2", "end_of_support": "2020-01-14", "status": "to_verify", "source": "https://learn.microsoft.com/lifecycle/products/windows-server-2008-r2"},
+    {"match": "windows server 2012", "label": "Windows Server 2012 / 2012 R2", "end_of_support": "2023-10-10", "status": "to_verify", "source": "https://learn.microsoft.com/lifecycle/products/windows-server-2012-r2"},
+    {"match": "windows server 2016", "label": "Windows Server 2016", "end_of_support": "2027-01-12", "status": "to_verify", "source": "https://learn.microsoft.com/lifecycle/products/windows-server-2016"},
+    {"match": "centos 6", "label": "CentOS 6", "end_of_support": "2020-11-30", "status": "to_verify", "source": "https://www.centos.org/centos-linux-eol/"},
+    {"match": "centos 7", "label": "CentOS 7", "end_of_support": "2024-06-30", "status": "to_verify", "source": "https://www.centos.org/centos-linux-eol/"},
+    {"match": "centos 8", "label": "CentOS 8", "end_of_support": "2021-12-31", "status": "to_verify", "source": "https://www.centos.org/centos-linux-eol/"},
+    {"match": "red hat enterprise linux 6", "label": "RHEL 6", "end_of_support": "2020-11-30", "status": "to_verify", "source": "https://access.redhat.com/support/policy/updates/errata"},
+    {"match": "red hat enterprise linux 7", "label": "RHEL 7", "end_of_support": "2024-06-30", "status": "to_verify", "source": "https://access.redhat.com/support/policy/updates/errata"},
+    {"match": "ubuntu linux (64-bit) 16", "label": "Ubuntu 16.04", "end_of_support": "2021-04-30", "status": "to_verify", "source": "https://ubuntu.com/about/release-cycle"},
+    {"match": "ubuntu 16.04", "label": "Ubuntu 16.04", "end_of_support": "2021-04-30", "status": "to_verify", "source": "https://ubuntu.com/about/release-cycle"},
+    {"match": "ubuntu 18.04", "label": "Ubuntu 18.04", "end_of_support": "2023-05-31", "status": "to_verify", "source": "https://ubuntu.com/about/release-cycle"},
+    {"match": "ubuntu 20.04", "label": "Ubuntu 20.04", "end_of_support": "2025-05-31", "status": "to_verify", "source": "https://ubuntu.com/about/release-cycle"},
+    {"match": "suse linux enterprise 12", "label": "SLES 12", "end_of_support": "2024-10-31", "status": "to_verify", "source": "https://www.suse.com/lifecycle/"},
+    {"match": "debian gnu/linux 9", "label": "Debian 9", "end_of_support": "2022-06-30", "status": "to_verify", "source": "https://wiki.debian.org/LTS"},
+    {"match": "debian gnu/linux 10", "label": "Debian 10", "end_of_support": "2024-06-30", "status": "to_verify", "source": "https://wiki.debian.org/LTS"}
+  ]
+}

@@ -1,0 +1,6 @@
+__pycache__/
+.pytest_cache/
+*.pyc
+.venv/
+# exports reales de clientes: nunca al repo
+exports/
