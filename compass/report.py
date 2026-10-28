@@ -28,6 +28,9 @@ SCENARIO_LABEL = {
     "AZURE": "Migrar a Azure",
     "GCP": "Migrar a Google Cloud",
     "PROXMOX": "Migrar a Proxmox VE",
+    "HYPERV": "Migrar a Hyper-V",
+    "NUTANIX": "Migrar a Nutanix AHV",
+    "OLVM": "Migrar a Oracle Linux Virtualization Manager",
 }
 
 
@@ -54,9 +57,12 @@ def term_ranges(result: dict, years: int) -> list[dict]:
         elif key == "PROXMOX":
             low, high = s["annual_usd"]["low"] * years, s["annual_usd"]["high"] * years
             basis = f"Suscripción {s['tier']} a {s['upper_tier']}, {s['sockets']} sockets"
-        else:
+        elif "region" in s:
             low, high = s["annual_usd"]["low"] * years, s["annual_usd"]["high"] * years
             basis = f"{s['region']}: compromiso 3 años a pago por uso"
+        else:  # otros hipervisores en sitio: solo se necesita annual_usd
+            low, high = s["annual_usd"]["low"] * years, s["annual_usd"]["high"] * years
+            basis = s.get("basis", "Licencia o suscripción sobre el hardware actual")
         rows.append({"key": key, "label": SCENARIO_LABEL.get(key, key), "low": low, "high": high,
                      "basis": basis, "sample": s.get("catalog_is_sample", False)})
     return rows
@@ -174,7 +180,7 @@ def render_html(result: dict, *, client: str = "", example: bool = False,
     broadcom, proxmox = load_rules("broadcom"), load_rules("proxmox")
     min_cpu = broadcom["rules"]["min_cores_per_cpu"]["value"]
     rows = term_ranges(result, years)
-    clouds = [s for k, s in sc.items() if k not in ("VCF", "VVF", "PROXMOX")]
+    clouds = [s for k, s in sc.items() if k not in ("VCF", "VVF", "PROXMOX") and "region" in s]
     catalogs = [{"provider": s["provider"], "region": s["region"], "sample": s["catalog_is_sample"],
                  "fetched": s["catalog_fetched"]} for s in clouds]
     example = example or any(c["sample"] for c in catalogs)
