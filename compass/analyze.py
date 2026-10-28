@@ -16,7 +16,7 @@ from .rules import load_rules
 def analyze(export_path: str | Path, catalogs: list[str | Path] = (), *,
             term_years: int = 3, late_renewal: bool = False,
             apply_order_minimum: bool | None = None,
-            proxmox_tier: str | None = None, today: date | None = None) -> dict:
+            proxmox_tier: str | None = None, owns_datacenter: bool = False, today: date | None = None) -> dict:
     inv = rvtools.load(export_path)
     broadcom = load_rules("broadcom")
     result = {
@@ -31,7 +31,7 @@ def analyze(export_path: str | Path, catalogs: list[str | Path] = (), *,
         catalog = load_catalog(path)
         result["scenarios"][catalog["provider"].upper()] = cloud_cost(inv.vms, catalog)
     result["scenarios"]["PROXMOX"] = proxmox_cost(inv.hosts, load_rules("proxmox"), proxmox_tier)
-    result["scenarios"]["HYPERV"] = hyperv_cost(inv.hosts, load_rules("hyperv"), term_years)
+    result["scenarios"]["HYPERV"] = hyperv_cost(inv.hosts, load_rules("hyperv"), term_years, owns_datacenter=owns_datacenter)
     result["scenarios"]["NUTANIX"] = nutanix_cost(inv.hosts, load_rules("nutanix"))
     result["scenarios"]["OLVM"] = olvm_cost(inv.hosts, load_rules("oracle"))
     return result

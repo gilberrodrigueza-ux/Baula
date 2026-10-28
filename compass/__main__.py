@@ -21,12 +21,14 @@ def main(argv=None) -> int:
     p.add_argument("--late", action="store_true", help="Aplicar recargo por renovación tardía")
     p.add_argument("--order-minimum", action="store_true", help="Aplicar el mínimo de 72 núcleos por pedido (en disputa)")
     p.add_argument("--proxmox-tier", choices=["community", "basic", "standard", "premium"])
+    p.add_argument("--owns-datacenter", action="store_true", help="El cliente ya tiene Windows Server Datacenter para sus hosts")
     p.add_argument("--json", action="store_true", help="Imprimir el resultado completo en JSON")
     a = p.parse_args(argv)
 
     try:
         r = analyze(a.export, a.catalog, term_years=a.years, late_renewal=a.late,
-                    apply_order_minimum=a.order_minimum or None, proxmox_tier=a.proxmox_tier)
+                    apply_order_minimum=a.order_minimum or None, proxmox_tier=a.proxmox_tier,
+                    owns_datacenter=a.owns_datacenter)
     except RVToolsError as e:
         print(f"Error: {e}", file=sys.stderr)
         return 2
