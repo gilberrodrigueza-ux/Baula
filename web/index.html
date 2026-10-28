@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="es" data-lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Baula · Planificá tu salida de VMware</title>
+  <meta name="description" content="Baula es una herramienta open core, en desarrollo, para planificar la salida de VMware: comparar renovar con Broadcom contra Azure, GCP y Proxmox a partir de un export de RVTools.">
+  <meta property="og:title" content="Baula · Cruza océanos. Llega a casa.">
+  <meta property="og:description" content="Planificación neutral de la salida de VMware. En desarrollo; buscamos empresas para entrevistas.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://baulashift.com/">
+  <meta name="theme-color" content="#0b2a3a">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Baula">
+      <img src="favicon.svg" alt="" width="28" height="28">
+      <span>Baula</span>
+    </a>
+    <nav>
+      <a href="#compass"><span data-es>Compass</span><span data-en>Compass</span></a>
+      <a href="#roadmap"><span data-es>Hoja de ruta</span><span data-en>Roadmap</span></a>
+      <a href="#contacto"><span data-es>Contacto</span><span data-en>Contact</span></a>
+      <button class="lang" type="button" id="lang-toggle" aria-label="Cambiar idioma / Switch language">EN</button>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <p class="status"><span class="dot"></span>
+        <span data-es>En desarrollo · fase de entrevistas</span>
+        <span data-en>In development · interview phase</span>
+      </p>
+      <h1>
+        <span data-es>Cruza océanos.<br>Llega a casa.</span>
+        <span data-en>Cross oceans.<br>Land home.</span>
+      </h1>
+      <p class="lead">
+        <span data-es>Baula ayuda a planificar la salida de VMware con números claros: cuánto cuesta renovar con Broadcom frente a moverse a Azure, Google Cloud o Proxmox, a partir de tu propio inventario.</span>
+        <span data-en>Baula helps you plan your exit from VMware with clear numbers: what renewing with Broadcom costs versus moving to Azure, Google Cloud or Proxmox, based on your own inventory.</span>
+      </p>
+      <div class="actions">
+        <a class="btn primary" href="#contacto">
+          <span data-es>Quiero participar</span><span data-en>I want in</span>
+        </a>
+        <a class="btn ghost" href="#compass">
+          <span data-es>Qué estamos construyendo</span><span data-en>What we're building</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="why">
+      <h2>
+        <span data-es>Por qué ahora</span>
+        <span data-en>Why now</span>
+      </h2>
+      <div class="grid three">
+        <article>
+          <h3><span data-es>El licenciamiento cambió</span><span data-en>Licensing changed</span></h3>
+          <p>
+            <span data-es>Con Broadcom, VMware pasó a suscripción por núcleo y a paquetes como VCF y VVF. Muchas renovaciones llegan con aumentos difíciles de justificar.</span>
+            <span data-en>Under Broadcom, VMware moved to per-core subscriptions and bundles like VCF and VVF. Many renewals arrive with increases that are hard to justify.</span>
+          </p>
+        </article>
+        <article>
+          <h3><span data-es>Las opciones no son obvias</span><span data-en>The options aren't obvious</span></h3>
+          <p>
+            <span data-es>Renovar, negociar, ir a la nube pública o a Proxmox: cada camino tiene costos de licencias, hardware, sistemas operativos y personas que rara vez se comparan lado a lado.</span>
+            <span data-en>Renew, negotiate, go to public cloud or to Proxmox: each path carries licensing, hardware, OS and people costs that are rarely compared side by side.</span>
+          </p>
+        </article>
+        <article>
+          <h3><span data-es>Falta una capa neutral</span><span data-en>A neutral layer is missing</span></h3>
+          <p>
+            <span data-es>Baula no vende nube ni hardware. Complementa herramientas como Flexera, Device42 o TransitionManager; no las reemplaza.</span>
+            <span data-en>Baula doesn't sell cloud or hardware. It complements tools like Flexera, Device42 or TransitionManager; it doesn't replace them.</span>
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="compass" id="compass">
+      <div class="split">
+        <div>
+          <p class="eyebrow"><span data-es>Primer producto</span><span data-en>First product</span></p>
+          <h2>Baula Compass</h2>
+          <p>
+            <span data-es>Un analizador gratuito: subís el export de RVTools y obtenés una comparación de costos y riesgos entre renovar VCF o VVF, Azure, Google Cloud y Proxmox.</span>
+            <span data-en>A free analyzer: upload your RVTools export and get a cost and risk comparison between renewing VCF or VVF, Azure, Google Cloud and Proxmox.</span>
+          </p>
+          <ul class="checks">
+            <li><span data-es>Corre en tu navegador: el inventario no sale de tu equipo.</span><span data-en>Runs in your browser: the inventory never leaves your machine.</span></li>
+            <li><span data-es>Reglas de licenciamiento de Broadcom con fecha y fuente.</span><span data-en>Broadcom licensing rules with date and source.</span></li>
+            <li><span data-es>Señala sistemas operativos fuera de soporte y riesgos de compatibilidad.</span><span data-en>Flags end-of-life operating systems and compatibility risks.</span></li>
+            <li><span data-es>En español y en inglés.</span><span data-en>In Spanish and English.</span></li>
+          </ul>
+          <p class="note">
+            <span data-es>Estado: el motor de cálculo está en prototipo. Todavía no hay una versión pública para usar.</span>
+            <span data-en>Status: the calculation engine is a prototype. There is no public version to use yet.</span>
+          </p>
+        </div>
+        <div class="mock" aria-hidden="true">
+          <div class="mock-row head"><span>RVTools.xlsx</span><span>312 VMs · 48 hosts</span></div>
+          <div class="mock-row"><span>VCF</span><i style="--w:92%"></i></div>
+          <div class="mock-row"><span>VVF</span><i style="--w:71%"></i></div>
+          <div class="mock-row"><span>Azure</span><i style="--w:64%"></i></div>
+          <div class="mock-row"><span>GCP</span><i style="--w:60%"></i></div>
+          <div class="mock-row"><span>Proxmox</span><i style="--w:38%"></i></div>
+          <p class="mock-cap"><span data-es>Ilustración, no datos reales</span><span data-en>Illustration, not real data</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="roadmap" id="roadmap">
+      <h2><span data-es>Hoja de ruta</span><span data-en>Roadmap</span></h2>
+      <p class="sub">
+        <span data-es>Lo que existe hoy y lo que es diseño. Lo decimos sin vueltas.</span>
+        <span data-en>What exists today and what is still design. No spin.</span>
+      </p>
+      <ol class="phases">
+        <li class="now">
+          <span class="tag"><span data-es>Ahora</span><span data-en>Now</span></span>
+          <h3><span data-es>Entrevistas y prototipo</span><span data-en>Interviews and prototype</span></h3>
+          <p>
+            <span data-es>Conversaciones con equipos de infraestructura y prototipo del motor de Compass.</span>
+            <span data-en>Conversations with infrastructure teams and a prototype of the Compass engine.</span>
+          </p>
+        </li>
+        <li>
+          <span class="tag"><span data-es>Siguiente</span><span data-en>Next</span></span>
+          <h3>Baula Compass</h3>
+          <p>
+            <span data-es>Analizador gratuito en el navegador a partir de RVTools.</span>
+            <span data-en>Free in-browser analyzer based on RVTools.</span>
+          </p>
+        </li>
+        <li>
+          <span class="tag"><span data-es>Después</span><span data-en>Later</span></span>
+          <h3>Baula Tide</h3>
+          <p>
+            <span data-es>Descubrimiento, dependencias, consolidación de firewall, cambio de IPs y planificación por olas.</span>
+            <span data-en>Discovery, dependencies, firewall consolidation, re-IP and wave planning.</span>
+          </p>
+        </li>
+        <li>
+          <span class="tag"><span data-es>Después</span><span data-en>Later</span></span>
+          <h3>Baula Nest</h3>
+          <p>
+            <span data-es>Runbooks, landing zone en Terraform y modo evento para el día del corte.</span>
+            <span data-en>Runbooks, Terraform landing zone and event mode for cutover day.</span>
+          </p>
+        </li>
+      </ol>
+    </section>
+
+    <section class="contact" id="contacto">
+      <div class="card">
+        <h2>
+          <span data-es>Buscamos empresas que estén decidiendo qué hacer con VMware</span>
+          <span data-en>We're looking for companies deciding what to do with VMware</span>
+        </h2>
+        <p>
+          <span data-es>Si tu equipo enfrenta una renovación con Broadcom, nos gustaría una conversación de 30 minutos. A cambio, te damos acceso anticipado a Compass y una lectura de tu caso. Empezamos por Costa Rica y Centroamérica.</span>
+          <span data-en>If your team is facing a Broadcom renewal, we'd love a 30-minute conversation. In return you get early access to Compass and a read on your case. We're starting with Costa Rica and Central America.</span>
+        </p>
+        <a class="btn primary" id="mail-cta" href="mailto:hola@baulashift.com?subject=Baula%20-%20Quiero%20participar">
+          <span data-es>Escribinos a hola@baulashift.com</span>
+          <span data-en>Email us at hola@baulashift.com</span>
+        </a>
+        <p class="fine">
+          <span data-es>Solo usamos tu correo para coordinar la entrevista y avisarte cuando Compass esté disponible.</span>
+          <span data-en>We only use your email to schedule the interview and let you know when Compass is available.</span>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="year">2026</span> Baula · baulashift.com</p>
+    <p class="fine">
+      <span data-es>VMware, VCF y VVF son marcas de Broadcom. Azure es marca de Microsoft. Google Cloud es marca de Google. Baula no está afiliada a ninguna de ellas.</span>
+      <span data-en>VMware, VCF and VVF are trademarks of Broadcom. Azure is a trademark of Microsoft. Google Cloud is a trademark of Google. Baula is not affiliated with any of them.</span>
+    </p>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
