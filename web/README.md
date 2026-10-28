@@ -15,7 +15,8 @@ python3 -m http.server 8000
 El `wrangler.jsonc` de la raíz del repo publica `web/` como assets estáticos del Worker `baula`.
 
 1. Cloudflare → Workers & Pages → el Worker `baula` (conectado al repo, branch `main`). Cada push a `main` despliega solo.
-2. Settings → Domains & Routes → Add → Custom domain → `baulashift.com`, y otra vez con `www.baulashift.com`. Como el dominio está en Cloudflare, los registros DNS se crean solos.
+2. Settings → Domains & Routes → Add → Custom domain → `baulashift.com`. Como el dominio está en Cloudflare, el registro DNS se crea solo.
+3. `www.baulashift.com` es un CNAME proxied a la raíz con una Redirect Rule 301 (plantilla "Redirect from WWW to root").
 
 `web/.assetsignore` evita que este README quede publicado.
 
