@@ -1,7 +1,7 @@
 """Pruebas con los exports de 5 empresas FICTICIAS (tests/fixtures/empresas, ver scripts/make_simulated_companies.py).
 
-Las pruebas marcadas xfail documentan comportamientos del motor que salieron raros en estas
-pruebas y que todavía no se corrigieron. Cuando se corrija uno, su prueba pasa y hay que
+Las pruebas marcadas xfail (si hay) documentan comportamientos del motor que salieron raros en
+estas pruebas y que todavía no se corrigieron. Cuando se corrija uno, su prueba pasa y hay que
 quitarle la marca (strict=True la hace fallar para que no se olvide).
 """
 from datetime import date
@@ -129,9 +129,26 @@ def test_descuento_de_compromiso_no_toca_la_licencia_windows():
     assert c["windows_license_usd_month"] > 0.5 * base  # 87% Windows: la licencia pesa
 
 
-@pytest.mark.xfail(strict=True, reason="las VMs de sistema (vCLS, vCenter) se cotizan en la nube como cualquier otra")
-def test_no_cotiza_vcls_en_la_nube():
+def test_no_cotiza_vcls_ni_vcenter_en_la_nube():
     from compass.cloud import cloud_cost
-    inv = rvtools.load(path("coopeandina"))
-    lines = cloud_cost(inv.vms, load_catalog(CATALOG))["lines"]
-    assert not any(l["vm"].startswith("vCLS-") for l in lines)
+    inv = rvtools.load(path("utvalle"))
+    r = cloud_cost(inv.vms, load_catalog(CATALOG))
+    names = {l["vm"] for l in r["lines"]} | set(r["vms_unplaced"])
+    assert not any(n.startswith("vCLS-") for n in names)
+    assert "vcenter-campus" in r["vms_vmware_system"] and "vcenter-investigacion" in r["vms_vmware_system"]
+    assert sum(1 for n in r["vms_vmware_system"] if n.startswith("vCLS-")) == 3
+
+
+def test_otras_vms_photon_si_se_cotizan():
+    # el UAG de Horizon corre en Photon pero no es parte de vSphere: se cotiza
+    from compass.cloud import cloud_cost
+    inv = rvtools.load(path("conecta"))
+    r = cloud_cost(inv.vms, load_catalog(CATALOG))
+    assert not any(n.startswith("uag") for n in r["vms_vmware_system"])
+    assert "vcsa" in r["vms_vmware_system"]
+
+
+def test_fechas_de_fin_de_soporte_con_fuente():
+    for e in load_rules("os_eol")["entries"]:
+        assert e["status"] in ("official", "reported"), e["label"]
+        assert e["sources"] and all(s["url"] and s["checked"] for s in e["sources"]), e["label"]

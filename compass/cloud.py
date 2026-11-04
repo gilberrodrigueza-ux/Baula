@@ -7,6 +7,7 @@ asignadas (no las consumidas: eso es dimensionamiento por uso real, fuera del MV
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 from .rvtools import VM
@@ -21,6 +22,18 @@ def load_catalog(path: str | Path) -> dict:
 
 def is_windows(vm: VM) -> bool:
     return "windows" in vm.os.lower()
+
+
+# VMs de la propia plataforma VMware que no se migran: vCLS (vSphere Cluster Services) y el vCenter
+_VCENTER_NAME = re.compile(r"(^|[-_.])(vc|vcsa|vcenter)\d*($|[-_.])")
+
+
+def is_vmware_system(vm: VM) -> bool:
+    name = vm.name.lower()
+    if name.startswith("vcls-") or name.startswith("vcls ("):
+        return True
+    photon = "photon" in (vm.os or vm.os_config).lower()
+    return photon and _VCENTER_NAME.search(name) is not None
 
 
 def pick_instance(vm: VM, catalog: dict) -> dict | None:
@@ -38,12 +51,15 @@ def cloud_cost(vms: list[VM], catalog: dict, *, include_powered_off: bool = Fals
     storage_rate = catalog["storage"]["usd_per_gib_month"]
     commit = catalog.get("commit_discount_3yr", 0.0)
 
-    lines, unplaced = [], []
+    lines, unplaced, system = [], [], []
     # el compromiso (reserva o plan de ahorro) descuenta solo el cómputo; la licencia de Windows
     # se paga aparte a precio de lista, así que se separa: cómputo base = precio Linux
     compute_month = license_month = storage_month = 0.0
     for vm in vms:
         if vm.template or (not vm.powered_on and not include_powered_off):
+            continue
+        if is_vmware_system(vm):
+            system.append(vm.name)
             continue
         disk_gib = vm.disk_total_mib / MIB_PER_GIB
         storage = disk_gib * storage_rate
@@ -70,6 +86,7 @@ def cloud_cost(vms: list[VM], catalog: dict, *, include_powered_off: bool = Fals
         "catalog_is_sample": catalog.get("sample", False),
         "vms_placed": len(lines),
         "vms_unplaced": unplaced,
+        "vms_vmware_system": system,
         "annual_usd": {"low": round(committed_year), "high": round(on_demand_year)},
         "compute_usd_month": round(compute_month, 2),
         "windows_license_usd_month": round(license_month, 2),
