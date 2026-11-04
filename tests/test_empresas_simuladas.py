@@ -1,4 +1,5 @@
-"""Pruebas con los exports de 5 empresas FICTICIAS (tests/fixtures/empresas, ver scripts/make_simulated_companies.py).
+"""Pruebas con los exports de 8 empresas FICTICIAS (tests/fixtures/empresas, ver scripts/make_simulated_companies.py
+y scripts/make_interview_companies.py).
 
 Las pruebas marcadas xfail (si hay) documentan comportamientos del motor que salieron raros en
 estas pruebas y que todavía no se corrigieron. Cuando se corrija uno, su prueba pasa y hay que
@@ -26,6 +27,10 @@ ESPERADO = {
     "laceiba": (87, 16, 256, 96),
     "conecta": (278, 10, 416, 0),
     "utvalle": (191, 10, 704, 0),
+    # entrevistas simuladas de la fase 0 (scripts/make_interview_companies.py)
+    "istmo": (86, 8, 196, 12),
+    "quetzal": (51, 6, 144, 48),
+    "copan": (58, 4, 128, 0),
 }
 
 
