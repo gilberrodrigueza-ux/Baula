@@ -25,7 +25,7 @@ ESPERADO = {
     "sanrafael": (139, 10, 416, 48),
     "laceiba": (87, 16, 256, 96),
     "conecta": (278, 10, 416, 0),
-    "utvalle": (190, 10, 704, 0),
+    "utvalle": (191, 10, 704, 0),
 }
 
 
@@ -71,24 +71,62 @@ def _unsupported(key):
     return summarize(inv, load_rules("os_eol"), TODAY)
 
 
-@pytest.mark.xfail(strict=True, reason="os_eol solo reconoce 'CentOS 7', no 'CentOS Linux 7 (Core)' ni 'Red Hat Enterprise Linux Server 7.9'")
-def test_detecta_centos_y_rhel_7_con_nombre_de_distribucion():
-    s = _unsupported("sanrafael")
-    flagged = {u["os"] for u in s["unsupported_os"]}
+def test_detecta_centos_rhel_y_sles_con_nombre_de_distribucion():
+    flagged = {u["os"] for u in _unsupported("sanrafael")["unsupported_os"]}
     assert "CentOS Linux 7 (Core)" in flagged
     assert "Red Hat Enterprise Linux Server 7.9 (Maipo)" in flagged
+    flagged = {u["os"] for u in _unsupported("laceiba")["unsupported_os"]}
+    assert "SUSE Linux Enterprise Server 12 SP5" in flagged
+    assert "SUSE Linux Enterprise Server 15 SP5" not in flagged
 
 
-@pytest.mark.xfail(strict=True, reason="os_eol no tiene Windows de escritorio (XP, 7, 10)")
 def test_detecta_windows_de_escritorio_sin_soporte():
+    labels = {u["label"] for u in _unsupported("conecta")["unsupported_os"]}
+    assert "Windows 10" in labels
+    labels = {u["label"] for u in _unsupported("sanrafael")["unsupported_os"]}
+    assert {"Windows XP", "Windows 7"} <= labels
+
+
+def test_2016_or_later_no_se_marca_como_2016():
+    # apagadas: VMware Tools no reporta y queda el genérico "2016 or later" (puede ser 2019 o 2022)
     s = _unsupported("conecta")
-    assert any("Windows 10" in u["os"] for u in s["unsupported_os"])
+    assert not any("or later" in u["os"] for u in s["unsupported_os"])
+    # si tiene prettyName de Guest Detailed Data se usa; si no, queda como versión desconocida
+    assert s["os_version_unknown"]
 
 
-@pytest.mark.xfail(strict=True, reason="el lector usa el nombre de VM como clave y descarta la segunda VM con el mismo nombre en otro vCenter")
+def test_ubuntu_generico_usa_guest_detailed_data():
+    s = _unsupported("utvalle")
+    assert "Ubuntu 18.04.6 LTS" in {u["os"] for u in s["unsupported_os"]}
+
+
 def test_no_descarta_vms_con_el_mismo_nombre_en_otro_vcenter():
     inv = rvtools.load(path("utvalle"))
-    assert sum(1 for v in inv.vms if v.name == "web01") == 2
+    web01 = [v for v in inv.vms if v.name == "web01"]
+    assert len(web01) == 2 and {v.vcenter for v in web01} == {"vcenter-campus.utvc.ac.cr", "vcenter-investigacion.utvc.ac.cr"}
+    assert all(v.disks_mib for v in web01)
+    assert not inv.warnings
+
+
+def test_avisa_esxi_sin_soporte_general():
+    r = analyze(path("coopeandina"), [CATALOG], today=TODAY)
+    hosts = r["inventory"]["unsupported_hosts"]
+    assert len(hosts) == 8 and all(h["state"] == "expired" and h["end_of_general_support"] == "2025-10-02" for h in hosts)
+    r = analyze(path("sanrafael"), [CATALOG], today=TODAY)
+    states = {h["host"]: h for h in r["inventory"]["unsupported_hosts"]}
+    assert states["esx-old01"]["end_of_general_support"] == "2022-10-15"
+    # ESXi 8 pierde soporte general en octubre de 2027: a 11 meses de la fecha de prueba
+    assert states["esx-n01"]["state"] == "expiring"
+
+
+def test_descuento_de_compromiso_no_toca_la_licencia_windows():
+    azure = Path(__file__).parent.parent / "prices" / "azure-eastus.json"
+    c = analyze(path("coopeandina"), [azure], today=TODAY)["scenarios"]["AZURE"]
+    cat = load_catalog(azure)
+    base = c["compute_usd_month"] - c["windows_license_usd_month"]
+    expected = (base * (1 - cat["commit_discount_3yr"]) + c["windows_license_usd_month"] + c["storage_usd_month"]) * 12
+    assert abs(c["annual_usd"]["low"] - expected) <= 1
+    assert c["windows_license_usd_month"] > 0.5 * base  # 87% Windows: la licencia pesa
 
 
 @pytest.mark.xfail(strict=True, reason="las VMs de sistema (vCLS, vCenter) se cotizan en la nube como cualquier otra")

@@ -58,6 +58,11 @@ def main(argv=None) -> int:
     print(f"  vCPU: {inv['vcpus_total']} · RAM: {inv['memory_gib_total']} GiB · Disco aprovisionado: {inv['disk_gib_provisioned']} GiB")
     print(f"  Hosts: {inv['hosts']} · Sockets: {inv['sockets']} · Núcleos físicos: {inv['physical_cores']}")
     print(f"  SO fuera de soporte o por vencer: {len(inv['unsupported_os'])}")
+    if inv.get("unsupported_hosts"):
+        expired = [h for h in inv["unsupported_hosts"] if h["state"] == "expired"]
+        print(f"  Hosts ESXi sin soporte general: {len(expired)}; lo pierden en 12 meses: {len(inv['unsupported_hosts']) - len(expired)}")
+    if inv.get("os_version_unknown"):
+        print(f"  VMs con SO sin versión (no se evaluó su soporte): {len(inv['os_version_unknown'])}")
     for w in inv["warnings"]:
         print(f"  Aviso: {w}")
     print("\nCosto anual estimado")

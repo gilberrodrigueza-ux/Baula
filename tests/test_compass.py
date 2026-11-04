@@ -127,9 +127,12 @@ def test_cloud_cost_ranges_and_skips_off():
     r = cloud_cost(vms, cat)
     assert r["vms_placed"] == 2 and r["vms_unplaced"] == ["big"]
     compute = (0.1 + 0.2) * 730
+    license_ = (0.2 - 0.1) * 730  # Windows: diferencia entre el precio Windows y el Linux
     storage = 2 * 100 * 0.1
     assert r["annual_usd"]["high"] == round((compute + storage) * 12)
-    assert r["annual_usd"]["low"] == round((compute * 0.5 + storage) * 12)
+    # el compromiso descuenta solo el cómputo, no la licencia de Windows
+    assert r["annual_usd"]["low"] == round(((compute - license_) * 0.5 + license_ + storage) * 12)
+    assert r["windows_license_usd_month"] == round(license_, 2)
     assert r["catalog_is_sample"] is True
 
 

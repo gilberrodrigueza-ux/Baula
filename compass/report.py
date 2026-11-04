@@ -114,6 +114,21 @@ def findings(result: dict, rows: list[dict], broadcom: dict, today: date) -> lis
         out.append(f"<b>{len(expired)} VMs con sistema operativo sin soporte</b> y {len(expiring)} que pierden "
                    f"soporte en los próximos 12 meses. Cualquier destino exige resolverlas: actualizar, "
                    f"aislar o pagar soporte extendido.")
+    old_hosts = [h for h in inv.get("unsupported_hosts", []) if h["state"] == "expired"]
+    if old_hosts:
+        by_date: dict[str, list[dict]] = {}
+        for h in old_hosts:
+            by_date.setdefault(h["end_of_general_support"], []).append(h)
+        parts = [f"{len(hs)} en ESXi {hs[0]['esx_version'].split()[2].rsplit('.', 1)[0]} (desde el {_fecha(d)})"
+                 for d, hs in sorted(by_date.items())]
+        out.append(f"<b>{len(old_hosts)} de {inv['hosts']} hosts no tienen soporte general de VMware</b>: "
+                   f"{', '.join(parts)}. Sin parches de seguridad; quedarse exige subir de versión, "
+                   f"lo que con hardware viejo puede no ser posible.")
+    if inv.get("os_version_unknown"):
+        out.append(f"{len(inv['os_version_unknown'])} VMs reportan un SO sin versión (por ejemplo "
+                   f"\"Ubuntu Linux (64-bit)\" o \"2016 or later\"); su fin de soporte no se pudo evaluar.")
+    for w in inv["warnings"]:
+        out.append(f"Aviso del lector: {escape(w)}")
     eogs = broadcom["rules"]["vsphere8_end_of_general_support"]["value"]
     v8 = [h for h in inv["host_list"] if "8.0" in h["esx_version"]]
     if v8:
@@ -160,9 +175,13 @@ def _sources_rows(broadcom: dict, proxmox: dict, catalogs: list[dict]) -> str:
         "late_renewal_surcharge": "Recargo por renovación tardía",
         "vvf_availability": "Disponibilidad de VVF en América",
         "vsphere8_end_of_general_support": "Fin de soporte general de vSphere 8",
+        "vsphere7_end_of_general_support": "Fin de soporte general de vSphere 7",
+        "vsphere6_end_of_general_support": "Fin de soporte general de vSphere 6.5 y 6.7",
     }
     rows = []
     for key, label in names.items():
+        if key not in broadcom["rules"]:
+            continue
         r = broadcom["rules"][key]
         src = "<br>".join(f'{escape(s["title"])} <span class="muted">({_fecha(s["source_date"])}, '
                           f'revisado {_fecha(s["checked"])})</span>' for s in r["sources"])
