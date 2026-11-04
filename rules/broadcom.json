@@ -1,6 +1,6 @@
 {
   "_comment": "Reglas de licenciamiento de VMware by Broadcom. Cada regla lleva fuente, fecha de la fuente y fecha de verificación. status: official (documento de Broadcom), reported (partners o analistas), disputed (fuentes contradictorias). Revisar mensualmente.",
-  "rules_version": "2026-10-28",
+  "rules_version": "2026-11-04",
   "rules": {
     "min_cores_per_cpu": {
       "value": 16,
@@ -76,6 +76,24 @@
       "note": "Fin de soporte general de vSphere 8.0 y ESXi 8.x. Disparador para quienes se quedaron en perpetuo.",
       "sources": [
         {"title": "Broadcom KB 459135: End of General Support for vSphere 8.0", "url": "https://knowledge.broadcom.com/external/article/459135/end-of-general-support-for-vsphere-80.html", "source_date": null, "checked": "2026-10-28"}
+      ]
+    },
+    "vsphere7_end_of_general_support": {
+      "value": "2025-10-02",
+      "status": "official",
+      "note": "Fin de soporte general de vSphere 7.0 y ESXi 7.x (extendido seis meses desde abril de 2025).",
+      "sources": [
+        {"title": "Broadcom KB 415405: End of General Support for vSphere 7.0", "url": "https://knowledge.broadcom.com/external/article/415405/end-of-general-support-for-vsphere.html", "source_date": null, "checked": "2026-11-04"},
+        {"title": "VMware blog: Reminder, vSphere 7 to reach end of service October 2, 2025", "url": "https://blogs.vmware.com/cloud-foundation/2025/03/31/reminder-vsphere-7-to-reach-end-of-service-october-2-2025", "source_date": "2025-03-31", "checked": "2026-11-04"}
+      ]
+    },
+    "vsphere6_end_of_general_support": {
+      "value": "2022-10-15",
+      "status": "official",
+      "note": "Fin de soporte general de vSphere 6.5 y 6.7 (ESXi 6.x).",
+      "sources": [
+        {"title": "VMware blog: Reminder, vSphere 6.5/6.7 End of General Support", "url": "https://core.vmware.com/blog/reminder-vsphere-6567-end-general-support", "source_date": null, "checked": "2026-11-04"},
+        {"title": "Broadcom KB 326984: End of General Support for vSphere 6.5/6.7/7.0", "url": "https://knowledge.broadcom.com/external/article/326984/end-of-general-support-for-vsan-656667.html", "source_date": null, "checked": "2026-11-04"}
       ]
     }
   }

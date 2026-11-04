@@ -39,7 +39,9 @@ def cloud_cost(vms: list[VM], catalog: dict, *, include_powered_off: bool = Fals
     commit = catalog.get("commit_discount_3yr", 0.0)
 
     lines, unplaced = [], []
-    compute_month = storage_month = 0.0
+    # el compromiso (reserva o plan de ahorro) descuenta solo el cómputo; la licencia de Windows
+    # se paga aparte a precio de lista, así que se separa: cómputo base = precio Linux
+    compute_month = license_month = storage_month = 0.0
     for vm in vms:
         if vm.template or (not vm.powered_on and not include_powered_off):
             continue
@@ -51,13 +53,16 @@ def cloud_cost(vms: list[VM], catalog: dict, *, include_powered_off: bool = Fals
             continue
         hourly = inst["windows_hour"] if is_windows(vm) else inst["linux_hour"]
         compute = hourly * hours
+        license_ = (inst["windows_hour"] - inst["linux_hour"]) * hours if is_windows(vm) else 0.0
         compute_month += compute
+        license_month += license_
         storage_month += storage
         lines.append({"vm": vm.name, "instance": inst["name"], "windows": is_windows(vm),
-                      "compute_usd_month": round(compute, 2), "storage_usd_month": round(storage, 2)})
+                      "compute_usd_month": round(compute, 2), "windows_license_usd_month": round(license_, 2),
+                      "storage_usd_month": round(storage, 2)})
 
     on_demand_year = (compute_month + storage_month) * 12
-    committed_year = (compute_month * (1 - commit) + storage_month) * 12
+    committed_year = ((compute_month - license_month) * (1 - commit) + license_month + storage_month) * 12
     return {
         "provider": catalog["provider"],
         "region": catalog["region"],
@@ -67,6 +72,7 @@ def cloud_cost(vms: list[VM], catalog: dict, *, include_powered_off: bool = Fals
         "vms_unplaced": unplaced,
         "annual_usd": {"low": round(committed_year), "high": round(on_demand_year)},
         "compute_usd_month": round(compute_month, 2),
+        "windows_license_usd_month": round(license_month, 2),
         "storage_usd_month": round(storage_month, 2),
         "lines": lines,
     }

@@ -26,9 +26,11 @@ VINFO_COLUMNS = {
     "in_use_mib": ["In Use MiB", "In Use MB"],
     "os_config": ["OS according to the configuration file", "OS"],
     "os_tools": ["OS according to the VMware Tools"],
+    "os_detail": ["Guest Detailed Data"],
     "host": ["Host"],
     "cluster": ["Cluster"],
     "datacenter": ["Datacenter"],
+    "vcenter": ["VI SDK Server"],
 }
 VINFO_REQUIRED = ("name", "powerstate", "cpus", "memory_mib")
 
@@ -50,6 +52,7 @@ VDISK_COLUMNS = {
     "disk": ["Disk"],
     "capacity_mib": ["Capacity MiB", "Capacity MB"],
     "thin": ["Thin"],
+    "vcenter": ["VI SDK Server"],
 }
 VDISK_REQUIRED = ("vm", "capacity_mib")
 
@@ -72,6 +75,9 @@ class VM:
     cluster: str
     datacenter: str
     disks_mib: list[float] = field(default_factory=list)
+    os_config: str = ""     # SO del archivo de configuración (puede ser genérico: "2016 or later")
+    os_detail: str = ""     # prettyName de "Guest Detailed Data" (vSphere 7.0 U1 y posteriores)
+    vcenter: str = ""       # columna "VI SDK Server": distingue VMs de igual nombre en otro vCenter
 
     @property
     def disk_total_mib(self) -> float:
@@ -153,6 +159,12 @@ def _str(value) -> str:
     return "" if value is None else str(value).strip()
 
 
+def _pretty_name(detail: str) -> str:
+    """Saca prettyName='...' de la columna Guest Detailed Data."""
+    m = re.search(r"prettyName='([^']*)'", detail or "")
+    return m.group(1).strip() if m else ""
+
+
 def load(path: str | Path) -> Inventory:
     path = Path(path)
     wb = load_workbook(path, read_only=True, data_only=True)
@@ -164,7 +176,8 @@ def load(path: str | Path) -> Inventory:
         )
     warnings: list[str] = []
 
-    vms: dict[str, VM] = {}
+    # clave (vCenter, nombre): un archivo puede traer varios vCenters con VMs del mismo nombre
+    vms: dict[tuple[str, str], VM] = {}
     for r in _rows(wb[sheets["vinfo"]], VINFO_COLUMNS, VINFO_REQUIRED, "vInfo"):
         name = _str(r["name"])
         if not name:
@@ -182,14 +195,26 @@ def load(path: str | Path) -> Inventory:
             host=_str(r.get("host")),
             cluster=_str(r.get("cluster")),
             datacenter=_str(r.get("datacenter")),
+            os_config=_str(r.get("os_config")),
+            os_detail=_pretty_name(_str(r.get("os_detail"))),
+            vcenter=_str(r.get("vcenter")),
         )
-        if name in vms:
-            warnings.append(f"VM duplicada en vInfo: {name}; se usa la primera.")
+        key = (vm.vcenter, name)
+        if key in vms:
+            where = f" en {vm.vcenter}" if vm.vcenter else ""
+            warnings.append(f"VM duplicada en vInfo{where}: {name}; se usa la primera.")
             continue
-        vms[name] = vm
+        vms[key] = vm
 
+    by_name: dict[str, list[VM]] = {}
+    for vm in vms.values():
+        by_name.setdefault(vm.name, []).append(vm)
     for r in _rows(wb[sheets["vdisk"]], VDISK_COLUMNS, VDISK_REQUIRED, "vDisk"):
-        vm = vms.get(_str(r["vm"]))
+        name = _str(r["vm"])
+        vm = vms.get((_str(r.get("vcenter")), name))
+        if vm is None and len(by_name.get(name, [])) == 1:
+            # una de las dos hojas no trae "VI SDK Server": el nombre alcanza si es único
+            vm = by_name[name][0]
         cap = _num(r["capacity_mib"])
         if vm is not None and cap is not None:
             vm.disks_mib.append(cap)

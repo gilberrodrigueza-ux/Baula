@@ -20,7 +20,7 @@ def analyze(export_path: str | Path, catalogs: list[str | Path] = (), *,
     inv = rvtools.load(export_path)
     broadcom = load_rules("broadcom")
     result = {
-        "inventory": summarize(inv, load_rules("os_eol"), today),
+        "inventory": summarize(inv, load_rules("os_eol"), today, broadcom),
         "scenarios": {},
     }
     for edition in ("VCF", "VVF"):
