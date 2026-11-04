@@ -31,7 +31,7 @@ def analyze(export_path: str | Path, catalogs: list[str | Path] = (), *,
         catalog = load_catalog(path)
         result["scenarios"][catalog["provider"].upper()] = cloud_cost(inv.vms, catalog)
     result["scenarios"]["PROXMOX"] = proxmox_cost(inv.hosts, load_rules("proxmox"), proxmox_tier)
-    result["scenarios"]["HYPERV"] = hyperv_cost(inv.hosts, load_rules("hyperv"), term_years, owns_datacenter=owns_datacenter)
+    result["scenarios"]["HYPERV"] = hyperv_cost(inv.hosts, load_rules("hyperv"), term_years, owns_datacenter=owns_datacenter, vms=inv.vms)
     result["scenarios"]["NUTANIX"] = nutanix_cost(inv.hosts, load_rules("nutanix"))
     result["scenarios"]["OLVM"] = olvm_cost(inv.hosts, load_rules("oracle"))
     return result
