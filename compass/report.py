@@ -277,6 +277,20 @@ def render_html(result: dict, *, client: str = "", example: bool = False,
         f'<tr><td><b>{escape(s["provider"].upper())}</b> {escape(s["region"])}</td><td class="n">{s["vms_placed"]}</td>'
         f'<td class="n">{len(s["vms_unplaced"])}</td><td class="n">{_usd(s["compute_usd_month"])}</td>'
         f'<td class="n">{_usd(s["storage_usd_month"])}</td><td class="n">{_range(s["annual_usd"])}</td></tr>' for s in clouds)
+    n_system = max((len(s.get("vms_vmware_system", [])) for s in clouds), default=0)
+    system_note = (f" No se cotizan {n_system} VMs de la plataforma VMware (vCLS y vCenter), que no se migran."
+                   if n_system else "")
+    n_desktop = max((len(s.get("vms_windows_desktop", [])) for s in clouds), default=0)
+    if n_desktop:
+        system_note += (f" Tampoco se cotizan {n_desktop} VMs con Windows de escritorio (XP, 7, 10, 11): en la nube "
+                        f"van por un servicio de escritorios (Azure Virtual Desktop o similar) con otro licenciamiento.")
+    unplaced = {u["vm"]: u for s in clouds for u in s.get("unplaced_detail", [])}
+    if unplaced:
+        shown = ", ".join(f'{escape(u["vm"])} ({u["vcpus"]} vCPU, {u["memory_gib"]:g} GiB)'
+                          for u in list(unplaced.values())[:8])
+        more = f" y {len(unplaced) - 8} más" if len(unplaced) > 8 else ""
+        system_note += (f" <b>Sin instancia en el catálogo, fuera del total:</b> {shown}{more}; "
+                        f"necesitan una serie más grande o una cotización aparte.")
     onprem = [(k, s) for k, s in sc.items() if k not in ("VCF", "VVF") and "region" not in s]
     onprem_rows = "".join(
         f'<tr><td><b>{escape(SCENARIO_LABEL.get(k, k).removeprefix("Migrar a "))}</b><br><span class="muted">'
@@ -329,7 +343,7 @@ def render_html(result: dict, *, client: str = "", example: bool = False,
   <h3>Sistemas operativos sin soporte o por vencer</h3>
   <table><thead><tr><th>Sistema operativo</th><th class="n">VMs</th><th class="n">Encendidas</th><th>Fin de soporte</th>
   <th>Estado</th></tr></thead><tbody>{risk_rows}</tbody></table>
-  <p class="note">Fechas de fin de soporte estándar del fabricante, pendientes de verificar contra cada página de ciclo de vida.</p>
+  <p class="note">Fechas de fin de soporte estándar del fabricante, revisadas el {_fecha(load_rules("os_eol")["rules_version"])}. Las fuentes de cada una están en rules/os_eol.json.</p>
 </section>
 
 <section class="page">
@@ -350,7 +364,9 @@ def render_html(result: dict, *, client: str = "", example: bool = False,
   <table><thead><tr><th>Destino</th><th class="n">VMs ubicadas</th><th class="n">Sin instancia</th>
   <th class="n">Cómputo / mes</th><th class="n">Disco / mes</th><th class="n">Anual (USD)</th></tr></thead><tbody>{cloud_rows}</tbody></table>
   <p class="note">Cada VM encendida va a la instancia más barata que cubre sus vCPU y RAM asignadas, no las usadas.
-  Windows a pago por uso, sin Azure Hybrid Benefit ni licencias propias. El rango va de compromiso a 3 años a pago por uso.</p>
+  Windows a pago por uso, sin Azure Hybrid Benefit ni licencias propias. El rango va de compromiso a 3 años y solo el
+  disco usado, a pago por uso y todo el disco aprovisionado; todo el disco se cotiza en el mismo nivel de
+  almacenamiento.{system_note}</p>
   <h3>Otros hipervisores sobre el hardware actual</h3>
   <table class="onprem"><thead><tr><th>Opción</th><th class="n">Anual (USD)</th><th>Base y alcance</th></tr></thead>
   <tbody>{onprem_rows}</tbody></table>

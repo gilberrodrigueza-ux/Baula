@@ -4,8 +4,10 @@
   "min_cores_per_cpu": {
     "value": 0,
     "status": "reported",
-    "note": "No hay mínimo publicado por CPU ni por pedido. El clúster de producción mínimo es de 3 nodos.",
+    "note": "No hay mínimo publicado por CPU ni por pedido. El clúster estándar es de 3 nodos; hay clústeres de 1 y 2 nodos solo en modelos ROBO, y NCI-Edge (hasta 5 nodos y 25 VMs por clúster) se licencia por VM.",
     "sources": [
+      {"title": "Nutanix Sizer wiki: Getting 1 node or 2 node clusters", "url": "https://sizerwiki.prod.saas.nutanix.com/?p=68", "source_date": "2018-10", "checked": "2026-11-04"},
+      {"title": "Nutanix datasheet: NCI-Edge", "url": "https://www.nutanix.com/library/datasheets/nci-edge", "source_date": "2025-11-05", "checked": "2026-11-04"},
       {"title": "Licenseware wiki: Nutanix Cloud Platform licensing", "url": "https://wiki.licenseware.io/wiki/nutanix-cloud-platform-licensing/", "source_date": "2026-10-07", "checked": "2026-10-28"},
       {"title": "Compare the Cloud: Renew VCF, move to Nutanix or migrate to Proxmox", "url": "https://www.comparethecloud.net/articles/renew-vmware-cloud-foundation-move-to-nutanix-or-migrate-to-proxmox-ve", "source_date": "2026-09-30", "checked": "2026-10-28"}
     ]

@@ -1,7 +1,7 @@
 """Pruebas con los exports de 5 empresas FICTICIAS (tests/fixtures/empresas, ver scripts/make_simulated_companies.py).
 
-Las pruebas marcadas xfail documentan comportamientos del motor que salieron raros en estas
-pruebas y que todavía no se corrigieron. Cuando se corrija uno, su prueba pasa y hay que
+Las pruebas marcadas xfail (si hay) documentan comportamientos del motor que salieron raros en
+estas pruebas y que todavía no se corrigieron. Cuando se corrija uno, su prueba pasa y hay que
 quitarle la marca (strict=True la hace fallar para que no se olvide).
 """
 from datetime import date
@@ -124,14 +124,68 @@ def test_descuento_de_compromiso_no_toca_la_licencia_windows():
     c = analyze(path("coopeandina"), [azure], today=TODAY)["scenarios"]["AZURE"]
     cat = load_catalog(azure)
     base = c["compute_usd_month"] - c["windows_license_usd_month"]
-    expected = (base * (1 - cat["commit_discount_3yr"]) + c["windows_license_usd_month"] + c["storage_usd_month"]) * 12
+    expected = (base * (1 - cat["commit_discount_3yr"]) + c["windows_license_usd_month"] + c["storage_in_use_usd_month"]) * 12
     assert abs(c["annual_usd"]["low"] - expected) <= 1
     assert c["windows_license_usd_month"] > 0.5 * base  # 87% Windows: la licencia pesa
 
 
-@pytest.mark.xfail(strict=True, reason="las VMs de sistema (vCLS, vCenter) se cotizan en la nube como cualquier otra")
-def test_no_cotiza_vcls_en_la_nube():
+def test_no_cotiza_vcls_ni_vcenter_en_la_nube():
     from compass.cloud import cloud_cost
-    inv = rvtools.load(path("coopeandina"))
-    lines = cloud_cost(inv.vms, load_catalog(CATALOG))["lines"]
-    assert not any(l["vm"].startswith("vCLS-") for l in lines)
+    inv = rvtools.load(path("utvalle"))
+    r = cloud_cost(inv.vms, load_catalog(CATALOG))
+    names = {l["vm"] for l in r["lines"]} | set(r["vms_unplaced"])
+    assert not any(n.startswith("vCLS-") for n in names)
+    assert "vcenter-campus" in r["vms_vmware_system"] and "vcenter-investigacion" in r["vms_vmware_system"]
+    assert sum(1 for n in r["vms_vmware_system"] if n.startswith("vCLS-")) == 3
+
+
+def test_otras_vms_photon_si_se_cotizan():
+    # el UAG de Horizon corre en Photon pero no es parte de vSphere: se cotiza
+    from compass.cloud import cloud_cost
+    inv = rvtools.load(path("conecta"))
+    r = cloud_cost(inv.vms, load_catalog(CATALOG))
+    assert not any(n.startswith("uag") for n in r["vms_vmware_system"])
+    assert "vcsa" in r["vms_vmware_system"]
+
+
+def test_fechas_de_fin_de_soporte_con_fuente():
+    for e in load_rules("os_eol")["entries"]:
+        assert e["status"] in ("official", "reported"), e["label"]
+        assert e["sources"] and all(s["url"] and s["checked"] for s in e["sources"]), e["label"]
+
+
+def test_escritorios_windows_no_se_cotizan_como_servidores():
+    azure = Path(__file__).parent.parent / "prices" / "azure-eastus.json"
+    c = analyze(path("conecta"), [azure], today=TODAY)["scenarios"]["AZURE"]
+    assert len(c["vms_windows_desktop"]) >= 180  # los VDI encendidos (220, unos 12% apagados)
+    assert not any(l["vm"].startswith("VDI-") for l in c["lines"])
+    h = analyze(path("sanrafael"), [azure], today=TODAY)["scenarios"]["AZURE"]
+    assert any(n.startswith("ecg-gw") for n in h["vms_windows_desktop"])  # Windows XP de equipos médicos
+
+
+def test_vm_sin_instancia_sale_con_detalle_en_el_reporte():
+    from compass.report import render_html
+    azure = Path(__file__).parent.parent / "prices" / "azure-eastus.json"
+    r = analyze(path("sanrafael"), [azure], today=TODAY)
+    assert r["scenarios"]["AZURE"]["unplaced_detail"] == [{"vm": "ia-imagenes-01", "vcpus": 128, "memory_gib": 1024}]
+    assert "ia-imagenes-01 (128 vCPU, 1024 GiB)" in render_html(r, today=TODAY)
+
+
+def test_hyperv_sugiere_datacenter_ya_licenciado_con_mayoria_windows():
+    s = analyze(path("coopeandina"), [CATALOG], today=TODAY)["scenarios"]["HYPERV"]
+    assert s["windows_share"] >= 0.5 and "ya tengan Datacenter" in s["note"]
+    assert s["annual_usd_if_owned"]["low"] == 0
+    u = analyze(path("utvalle"), [CATALOG], today=TODAY)["scenarios"]["HYPERV"]
+    assert u["windows_share"] < 0.5 and "ya tengan Datacenter" not in u["note"]
+
+
+def test_disco_usado_baja_el_piso_de_la_nube():
+    azure = Path(__file__).parent.parent / "prices" / "azure-eastus.json"
+    c = analyze(path("sanrafael"), [azure], today=TODAY)["scenarios"]["AZURE"]
+    assert 0 < c["storage_in_use_usd_month"] < c["storage_usd_month"]
+
+
+def test_nutanix_avisa_clusteres_chicos():
+    s = analyze(path("laceiba"), [CATALOG], today=TODAY)["scenarios"]["NUTANIX"]
+    assert len(s["small_clusters"]) == 12 and "menos de 3 hosts" in s["note"]
+    assert analyze(path("conecta"), [CATALOG], today=TODAY)["scenarios"]["NUTANIX"]["small_clusters"] == []
