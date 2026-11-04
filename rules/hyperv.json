@@ -1,0 +1,40 @@
+{
+  "_comment": "Hyper-V con Windows Server 2025 Datacenter, licencia perpetua por núcleo. Datacenter da VMs Windows ilimitadas en el host.",
+  "rules_version": "2026-10-28",
+  "min_cores_per_cpu": {
+    "value": 8,
+    "status": "official",
+    "sources": [
+      {"title": "Microsoft Product Terms, Windows Server (citado por Licenseware, Windows Server 2025 Licensing Guide)", "url": "https://licenseware.io/microsoft-windows-server-2025-licensing-guide/", "source_date": "2026-10-23", "checked": "2026-10-28"}
+    ]
+  },
+  "min_cores_per_server": {
+    "value": 16,
+    "status": "official",
+    "sources": [
+      {"title": "Microsoft Product Terms, Windows Server (citado por Licenseware)", "url": "https://licenseware.io/microsoft-windows-server-2025-licensing-guide/", "source_date": "2026-10-23", "checked": "2026-10-28"}
+    ]
+  },
+  "datacenter_usd_per_16_cores": {
+    "value": 6771,
+    "status": "official",
+    "note": "Precio sugerido (MSRP) de Microsoft; varía por país y por programa de licenciamiento. No incluye CALs.",
+    "sources": [
+      {"title": "Microsoft: Windows Server 2025 pricing", "url": "https://www.microsoft.com/windows-server/pricing", "source_date": null, "checked": "2026-10-28"}
+    ]
+  },
+  "software_assurance_rate": {
+    "value": 0.25,
+    "status": "assumption",
+    "note": "Costo anual de Software Assurance como fracción de la licencia. Supuesto de mercado, no publicado por Microsoft; confirmar con cotización.",
+    "sources": []
+  },
+  "azure_local_windows_guest_usd_per_core_month": {
+    "value": 23.3,
+    "status": "official",
+    "note": "Alternativa por suscripción con Azure Local. La página no muestra la tarifa de host en dólares; no se usa en el cálculo.",
+    "sources": [
+      {"title": "Azure Local pricing", "url": "https://azure.microsoft.com/en-us/pricing/details/azure-local/", "source_date": null, "checked": "2026-10-28"}
+    ]
+  }
+}

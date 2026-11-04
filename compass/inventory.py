@@ -53,6 +53,8 @@ def summarize(inv: Inventory, os_eol: dict, today: date | None = None) -> dict:
         "hosts": len(inv.hosts),
         "sockets": sum(h.sockets for h in inv.hosts),
         "physical_cores": sum(h.sockets * h.cores_per_cpu for h in inv.hosts),
+        "host_list": [{"name": h.name, "cluster": h.cluster, "sockets": h.sockets,
+                       "cores_per_cpu": h.cores_per_cpu, "esx_version": h.esx_version} for h in inv.hosts],
         "os_breakdown": dict(Counter(v.os or "Desconocido" for v in vms).most_common()),
         "powered_off_vms": sorted(v.name for v in off),
         "unsupported_os": unsupported,

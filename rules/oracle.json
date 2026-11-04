@@ -1,0 +1,13 @@
+{
+  "_comment": "Oracle Linux KVM con Oracle Linux Virtualization Manager (OLVM). El software es gratis; se paga soporte de Oracle Linux por par de CPUs físicas (un número impar de CPUs se redondea al par siguiente).",
+  "rules_version": "2026-10-28",
+  "support_usd_per_cpu_pair_year": {
+    "value": {"basic": 699, "premier": 1399, "premier_plus": 2499},
+    "status": "official",
+    "note": "Premier Plus incluye VMs ilimitadas por par de CPUs. Un análisis de 2025 dice que Basic y Premier cubren hasta 2 VMs por par; la lista oficial de oct-2026 no lo dice. Por eso el rango va de Premier a Premier Plus.",
+    "sources": [
+      {"title": "Oracle Linux Support and Oracle VM Support Global Price List, 1-oct-2026", "url": "https://www.oracle.com/a/ocom/docs/corporate/pricing/els-pricelist-070592.pdf", "source_date": "2026-10-01", "checked": "2026-10-28"},
+      {"title": "VAST IT Services: new Oracle Linux support pricing structure", "url": "https://vastitservices.com/blog/navigating-the-new-oracle-linux-support-pricing-structure/", "source_date": "2025-03-31", "checked": "2026-10-28"}
+    ]
+  }
+}

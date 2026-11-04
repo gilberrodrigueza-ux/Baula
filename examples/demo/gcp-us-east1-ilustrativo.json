@@ -1,0 +1,163 @@
+{
+  "provider": "gcp",
+  "region": "us-east1",
+  "currency": "USD",
+  "fetched": "2026-10-28T00:00:00+00:00",
+  "source": "Precios ILUSTRATIVOS, aproximados a mano a partir de precios públicos de lista conocidos a 2026, no descargados de la API ni cotizados. Solo para el reporte de ejemplo. No usar con clientes.",
+  "sample": true,
+  "hours_per_month": 730,
+  "commit_discount_3yr": 0.55,
+  "storage": {
+    "name": "Balanced PD (ilustrativo)",
+    "usd_per_gib_month": 0.1
+  },
+  "instances": [
+    {
+      "name": "n2-highcpu-2",
+      "vcpus": 2,
+      "memory_gib": 2,
+      "linux_hour": 0.0717,
+      "windows_hour": 0.1637
+    },
+    {
+      "name": "n2-standard-2",
+      "vcpus": 2,
+      "memory_gib": 8,
+      "linux_hour": 0.09712,
+      "windows_hour": 0.18912
+    },
+    {
+      "name": "n2-highmem-2",
+      "vcpus": 2,
+      "memory_gib": 16,
+      "linux_hour": 0.13101,
+      "windows_hour": 0.22301
+    },
+    {
+      "name": "n2-highcpu-4",
+      "vcpus": 4,
+      "memory_gib": 4,
+      "linux_hour": 0.14339,
+      "windows_hour": 0.32739
+    },
+    {
+      "name": "n2-standard-4",
+      "vcpus": 4,
+      "memory_gib": 16,
+      "linux_hour": 0.19424,
+      "windows_hour": 0.37824
+    },
+    {
+      "name": "n2-highmem-4",
+      "vcpus": 4,
+      "memory_gib": 32,
+      "linux_hour": 0.26203,
+      "windows_hour": 0.44603
+    },
+    {
+      "name": "n2-highcpu-8",
+      "vcpus": 8,
+      "memory_gib": 8,
+      "linux_hour": 0.28678,
+      "windows_hour": 0.65478
+    },
+    {
+      "name": "n2-standard-8",
+      "vcpus": 8,
+      "memory_gib": 32,
+      "linux_hour": 0.38847,
+      "windows_hour": 0.75647
+    },
+    {
+      "name": "n2-highmem-8",
+      "vcpus": 8,
+      "memory_gib": 64,
+      "linux_hour": 0.52406,
+      "windows_hour": 0.89206
+    },
+    {
+      "name": "n2-highcpu-16",
+      "vcpus": 16,
+      "memory_gib": 16,
+      "linux_hour": 0.57357,
+      "windows_hour": 1.30957
+    },
+    {
+      "name": "n2-standard-16",
+      "vcpus": 16,
+      "memory_gib": 64,
+      "linux_hour": 0.77694,
+      "windows_hour": 1.51294
+    },
+    {
+      "name": "n2-highmem-16",
+      "vcpus": 16,
+      "memory_gib": 128,
+      "linux_hour": 1.04811,
+      "windows_hour": 1.78411
+    },
+    {
+      "name": "n2-highcpu-32",
+      "vcpus": 32,
+      "memory_gib": 32,
+      "linux_hour": 1.14714,
+      "windows_hour": 2.61914
+    },
+    {
+      "name": "n2-standard-32",
+      "vcpus": 32,
+      "memory_gib": 128,
+      "linux_hour": 1.55389,
+      "windows_hour": 3.02589
+    },
+    {
+      "name": "n2-highmem-32",
+      "vcpus": 32,
+      "memory_gib": 256,
+      "linux_hour": 2.09622,
+      "windows_hour": 3.56822
+    },
+    {
+      "name": "n2-highcpu-48",
+      "vcpus": 48,
+      "memory_gib": 48,
+      "linux_hour": 1.7207,
+      "windows_hour": 3.9287
+    },
+    {
+      "name": "n2-standard-48",
+      "vcpus": 48,
+      "memory_gib": 192,
+      "linux_hour": 2.33083,
+      "windows_hour": 4.53883
+    },
+    {
+      "name": "n2-highmem-48",
+      "vcpus": 48,
+      "memory_gib": 384,
+      "linux_hour": 3.14434,
+      "windows_hour": 5.35234
+    },
+    {
+      "name": "n2-highcpu-64",
+      "vcpus": 64,
+      "memory_gib": 64,
+      "linux_hour": 2.29427,
+      "windows_hour": 5.23827
+    },
+    {
+      "name": "n2-standard-64",
+      "vcpus": 64,
+      "memory_gib": 256,
+      "linux_hour": 3.10778,
+      "windows_hour": 6.05178
+    },
+    {
+      "name": "n2-highmem-64",
+      "vcpus": 64,
+      "memory_gib": 512,
+      "linux_hour": 4.19245,
+      "windows_hour": 7.13645
+    }
+  ]
+}
